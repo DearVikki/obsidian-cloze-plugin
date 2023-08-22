@@ -1,9 +1,9 @@
 {
-	"id": "hidelight-plugin",
-	"name": "Hidelight",
+	"id": "cloze-plugin",
+	"name": "Cloze",
 	"version": "0.1.0",
 	"minAppVersion": "0.12.0",
-	"description": "Toggle the visibility of highlighted text in reading mode to aid in the memorization of important details.",
+	"description": "Convert highlights, underlines, bolded texts or any selected texts into clozes.",
 	"author": "Vikki",
 	"authorUrl": "https://github.com/DearVikki",
 	"isDesktopOnly": false
