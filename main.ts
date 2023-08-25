@@ -1,23 +1,22 @@
 import { App, Plugin, PluginSettingTab, Setting, Menu, Editor } from 'obsidian';
+import lang from './lang';
 
-// Remember to rename these classes and interfaces!
-
-interface MyPluginSettings {
+interface ClozePluginSettings {
 	defaultHide: boolean;
 	includeHighlighted: boolean;
 	includeUnderlined: boolean;
 	includeBolded: boolean;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: ClozePluginSettings = {
 	defaultHide: true,
 	includeHighlighted: false,
 	includeUnderlined: false,
 	includeBolded: false,
 }
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class ClozePlugin extends Plugin {
+	settings: ClozePluginSettings;
 
 	isAllHide: boolean = false;
 
@@ -27,7 +26,7 @@ export default class MyPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		this.addRibbonIcon('fish', 'Toggle cloze', (evt: MouseEvent) => {
+		this.addRibbonIcon('fish', lang.toggle_cloze, (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
 			this.toggleAllHide(!this.isAllHide);
 		});		
@@ -57,14 +56,14 @@ export default class MyPlugin extends Plugin {
 				if (selection) {
 					menu.addItem((item) => {
 						item
-						  .setTitle("Add cloze")
+						  .setTitle(lang.add_cloze)
 						  .onClick((e) => {
 							  this.addCloze(editor);
 						  });
 					});
 					menu.addItem((item) => {
 					  item
-						.setTitle("Remove cloze")
+						.setTitle(lang.remove_cloze)
 						.onClick((e) => {
 							this.removeCloze(editor);
 						});
@@ -75,7 +74,7 @@ export default class MyPlugin extends Plugin {
 
 		this.addCommand({
 			id: "add-cloze",
-			name: "Turn into cloze",
+			name: lang.add_cloze,
 			icon: "fish",
 			editorCallback: (editor, context) => {
 				this.addCloze(editor);
@@ -84,7 +83,7 @@ export default class MyPlugin extends Plugin {
 
 		this.addCommand({
 			id: "remove-cloze",
-			name: "Remove cloze",
+			name: lang.remove_cloze,
 			icon: "fish-off",
 			editorCallback: async (editor: Editor) => {
 				this.removeCloze(editor);
@@ -186,9 +185,9 @@ export default class MyPlugin extends Plugin {
 }
 
 class SettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: ClozePlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: ClozePlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -197,17 +196,21 @@ class SettingTab extends PluginSettingTab {
 		const {containerEl} = this;
 
 		containerEl.empty();
-		containerEl.createEl('h1', {text: 'Cloze'});
-    	containerEl.createEl("p", { text: "Created by " }).createEl("a", {
-			text: "Vikki",
-			href: "https://github.com/DearVikki",
-		  });
-
-    	containerEl.createEl('h2', {text: 'Settings'})
 
 		new Setting(containerEl)
-			.setName('Convert highlights into clozes')
-			.setDesc('Enabling this setting will convert all ==highlights== into clozes as well. ')
+		  .setName(lang.setting_hide_by_default)
+		  .setDesc(lang.setting_hide_by_default_desc)
+		  .addToggle(toggle => toggle
+			  .setValue(this.plugin.settings.defaultHide)
+			  .onChange(value => {
+				  this.plugin.settings.defaultHide = value;
+				  this.plugin.saveSettings();
+			  }))
+
+		containerEl.createEl('h2', {text: lang.setting_auto_convert});
+		new Setting(containerEl)
+			.setName(lang.setting_highlight)
+			.setDesc(lang.setting_highlight_desc)
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.includeHighlighted)
 				.onChange(value => {
@@ -216,8 +219,8 @@ class SettingTab extends PluginSettingTab {
 				}))
 
 		new Setting(containerEl)
-			.setName('Convert bolded text into clozes')
-			.setDesc('Enabling this setting will convert all **bolded text** into clozes as well. ')
+			.setName(lang.setting_bold)
+			.setDesc(lang.setting_bold_desc)
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.includeBolded)
 				.onChange(value => {
@@ -226,23 +229,14 @@ class SettingTab extends PluginSettingTab {
 				}))
 
 		new Setting(containerEl)
-			.setName('Convert underlines into clozes')
-			.setDesc('Enabling this setting will convert all <u>underlines</u> into clozes as well. ')
+			.setName(lang.setting_underline)
+			.setDesc(lang.setting_underline_desc)
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.includeUnderlined)
 				.onChange(value => {
 					this.plugin.settings.includeUnderlined = value;
 					this.plugin.saveSettings();
 				}))
-
-		new Setting(containerEl)
-			.setName('Hide by default')
-			.setDesc('By enabling this setting, all cloze content on the page will be hidden by default when it is opened. 🙈 ')
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.defaultHide)
-				.onChange(value => {
-					this.plugin.settings.defaultHide = value;
-					this.plugin.saveSettings();
-				}))
+		
 	}
 }
