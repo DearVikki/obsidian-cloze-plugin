@@ -46,4 +46,6 @@ Additionally, all clozes will be hidden by default, but you can disable this fea
 
 ## Installation
 
+This plugin is available in the Obsidian community plugin store. Look for **Cloze**.
+
 To manually install, simply download the required files and put them in your plugins folder.
