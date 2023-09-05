@@ -29,3 +29,8 @@ If your plugin does not need CSS, delete this file.
     bottom: 0;
     left: 0;
 }
+
+[data-mark-hide=true] {
+	color: transparent !important;
+	text-shadow: none !important;
+}
