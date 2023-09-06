@@ -6,21 +6,21 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
-.markdown-reading-view .cloze-span,
-.markdown-reading-view.cloze-highlighted mark,
-.markdown-reading-view.cloze-underlined u,
-.markdown-reading-view.cloze-bolded strong {
+.cloze .cloze-span,
+.cloze mark,
+.cloze u,
+.cloze strong {
     cursor: pointer;
 }
 
 .cloze-span,
-.markdown-reading-view.cloze-underlined u,
-.markdown-reading-view.cloze-bolded strong {
+.cloze u,
+.cloze strong {
     position: relative;
 }
 .cloze-span::after,
-.markdown-reading-view.cloze-underlined u::after,
-.markdown-reading-view.cloze-bolded strong::after {
+.cloze u::after,
+.cloze strong::after {
     content: "";
     display: inline-block;
     border-bottom: 1px solid var(--text-normal);

@@ -28,7 +28,7 @@ export default class ClozePlugin extends Plugin {
 		// This creates an icon in the left ribbon.
 		this.addRibbonIcon('fish', lang.toggle_cloze, (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
-			this.toggleAllHide(!this.isAllHide);
+			this.toggleAllHide(document, !this.isAllHide);
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
@@ -37,15 +37,6 @@ export default class ClozePlugin extends Plugin {
 		this.registerDomEvent(document, 'click', (event) => {
 			this.toggleHide(event.target as HTMLElement);
 		});
-
-		this.registerEvent(
-			this.app.workspace.on('file-open', async () => {
-				setTimeout(() => {
-					this.addClass();
-					this.toggleAllHide(this.settings.defaultHide);
-				}, 0);
-			})
-		);
 
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (
@@ -89,6 +80,11 @@ export default class ClozePlugin extends Plugin {
 				this.removeCloze(editor);
 			},
 		})
+
+		this.registerMarkdownPostProcessor((element, context) => {
+			element.classList.add('cloze');
+			this.toggleAllHide(element, this.settings.defaultHide);
+		})
 	}
 
 	onunload() {
@@ -103,32 +99,16 @@ export default class ClozePlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	addClass() {
-		const markdownView = document.querySelector('.markdown-reading-view');
-		if (markdownView) {
-			markdownView.classList.remove('cloze-highlighted', 'cloze-underlined', 'cloze-bolded');
-			if (this.settings.includeHighlighted) {
-				markdownView.classList.add('cloze-highlighted');
-			}
-			if (this.settings.includeUnderlined) {
-				markdownView.classList.add('cloze-underlined');
-			}
-			if (this.settings.includeBolded) {
-				markdownView.classList.add('cloze-bolded');
-			}
-		}
-	}
-
 	clozeSelector = () => {
-		const selectors = ['.markdown-reading-view .cloze-span'];
+		const selectors = ['.cloze .cloze-span'];
 		if (this.settings.includeHighlighted) {
-			selectors.push('.markdown-reading-view.cloze-highlighted mark');
+			selectors.push('.cloze mark');
 		}
 		if (this.settings.includeUnderlined) {
-			selectors.push('.markdown-reading-view.cloze-underlined u');
+			selectors.push('.cloze u');
 		}
 		if (this.settings.includeBolded) {
-			selectors.push('.markdown-reading-view.cloze-bolded strong');
+			selectors.push('.cloze strong');
 		}
 		return selectors.join(', ');
 	}
@@ -151,8 +131,8 @@ export default class ClozePlugin extends Plugin {
 		}
 	}
 
-	toggleAllHide(hide: boolean) {
-		const marks = document.querySelectorAll<HTMLElement>(this.clozeSelector());
+	toggleAllHide(dom: HTMLElement | Document = document, hide: boolean) {
+		const marks = dom.querySelectorAll<HTMLElement>(this.clozeSelector());
 		if (hide) {
 			marks.forEach((mark) => {
 				this.hideClozeContent(mark);
