@@ -16,18 +16,7 @@ If your plugin does not need CSS, delete this file.
 .cloze-span,
 .cloze u,
 .cloze strong {
-    position: relative;
-}
-.cloze-span::after,
-.cloze u::after,
-.cloze strong::after {
-    content: "";
-    display: inline-block;
     border-bottom: 1px solid var(--text-normal);
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
 }
 
 [data-mark-hide=true] {
