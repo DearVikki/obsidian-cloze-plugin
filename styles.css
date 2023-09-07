@@ -23,3 +23,11 @@ If your plugin does not need CSS, delete this file.
 	color: transparent !important;
 	text-shadow: none !important;
 }
+
+/* embedded segs */
+[data-mark-hide=true] mark,
+[data-mark-hide=true] u,
+[data-mark-hide=true] strong {
+	color: transparent !important;
+	text-shadow: none !important;
+}

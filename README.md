@@ -31,18 +31,42 @@ Note: When clozing text, a custom `<span></span>` will be added around the text.
 
 Note: it only works in reading mode. Everything remains same in editing mode.
 
+#### Single cloze
+
 To toggle the visibility of a cloze area, simply click on it. 
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/enable_highlight.gif" width="400" />
 
-If you want to toggle the visibility of all clozes, click on the ribbon icon --- a small fish.
+#### All clozes
+
+If you want to toggle the visibility of all clozes, click on the ribbon icon --- the small fish.
+
+Note that currently, it will also affect the default cloze visibility of the new page.
 
 <p>
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish.png" width="300" />
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
-Additionally, all clozes will be hidden by default, but you can disable this feature in the settings.
+## Q&As
+
+### What's the visibility of the clozes when the page is exported to PDF?
+
+Sadly, it can only be "all visibile" or "all hidden" for the present.
+
+Click the ribbon fish first, make sure that the page state is what you expect, and then click "export to PDF".
+
+### I would like another style for the cloze underlines.
+
+You can modify it by adding global custom CSS in this way:
+
+```css
+.cloze-span {
+	border-bottom-color: blue;
+ 	border-bottom-width: 2px;
+	/** or any other styles */
+}
+```
 
 ## Installation
 

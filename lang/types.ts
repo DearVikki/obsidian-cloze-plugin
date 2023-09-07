@@ -11,5 +11,6 @@ export interface Ilangs {
     setting_bold_desc: string;
     setting_underline: string;
     setting_underline_desc: string;
+	setting_contact: string;
     [key: string]: string;
 }

@@ -18,7 +18,7 @@ const DEFAULT_SETTINGS: ClozePluginSettings = {
 export default class ClozePlugin extends Plugin {
 	settings: ClozePluginSettings;
 
-	isAllHide = false;
+	isAllHide = true;
 
 	async onload() {
 		console.log('load cloze plugin');
@@ -29,6 +29,7 @@ export default class ClozePlugin extends Plugin {
 		this.addRibbonIcon('fish', lang.toggle_cloze, (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
 			this.toggleAllHide(document, !this.isAllHide);
+			this.isAllHide = !this.isAllHide;
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
@@ -83,8 +84,9 @@ export default class ClozePlugin extends Plugin {
 
 		this.registerMarkdownPostProcessor((element, context) => {
 			element.classList.add('cloze');
-			this.toggleAllHide(element, this.settings.defaultHide);
+			this.toggleAllHide(element, this.isAllHide);
 		})
+
 	}
 
 	onunload() {
@@ -93,10 +95,12 @@ export default class ClozePlugin extends Plugin {
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.isAllHide = this.settings.defaultHide;
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+		this.isAllHide = this.settings.defaultHide;
 	}
 
 	clozeSelector = () => {
@@ -137,12 +141,10 @@ export default class ClozePlugin extends Plugin {
 			marks.forEach((mark) => {
 				this.hideClozeContent(mark);
 			})
-			this.isAllHide = true;
 		} else {
 			marks.forEach((mark) => {
 				this.showClozeContent(mark);
 			})
-			this.isAllHide = false;
 		}
 	}
 
@@ -174,6 +176,7 @@ class SettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
+		containerEl.createEl("h1", { text: "Cloze" });
 
 		new Setting(containerEl)
 			.setName(lang.setting_hide_by_default)
@@ -215,6 +218,13 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.includeUnderlined = value;
 					this.plugin.saveSettings();
 				}))
-
+		
+		containerEl.createEl("p", { 
+			text: lang.setting_contact + " ",
+			cls: "setting-item-description"
+		}).createEl("a", {
+			text: "here",
+			href: "https://github.com/DearVikki/obsidian-cloze-plugin/issues",
+		});
 	}
 }
