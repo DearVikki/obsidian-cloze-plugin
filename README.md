@@ -1,5 +1,7 @@
 # Cloze - Obsidian Plugin
 
+English | [简体中文](./README-CN.md)
+
 Inspired from anki cards, this simple plugin for [Obsidian](https://obsidian.md/) enables you to create a cloze from highlighted, underlined, or bolded texts, as well as any selected text in reading mode.
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/demo.gif" width="500" />
