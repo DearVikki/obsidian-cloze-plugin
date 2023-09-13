@@ -54,12 +54,12 @@ Note: 仅在阅读模式下有效。
 
 ### 最佳实践
 
-- 将「添加填空」操作添加为 Obsidian 热键可以大大节省时间！<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="350" />
-- 页面温习最佳伴侣：[Spaced Repetition #review 标签](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/)
+- 将「添加填空」操作添加为 Obsidian 热键可以大大节省时间！<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="800" />
+- 页面温习好助手：[Spaced Repetition #review 标签](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/)
 
 ## Q&As
 
-### cloze 可不可以增加提示呢
+### 想给 cloze 增加提示
 
 因为自定义 cloze 的本质就是 html span 标签，所以你刚好可以用上标签的 title 属性！
 
