@@ -6,6 +6,8 @@
 
 这款干净的 Obsidian 插件支持高亮文本、粗体文本、下划线文本以及任何自选文本区域的 cloze 化。不过仅在阅读模式 reading mode 下才可有效交互哦！
 
+p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-repetition/) 这款插件简直就是 Obsidian 版本的 Anki，并且也支持 cloze card! 相较起来，Cloze plugin 更适合页面/整篇文章回顾的场景。
+
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/demo.gif" width="500" />
 
 ## 使用
@@ -50,7 +52,22 @@ Note: 仅在阅读模式下有效。
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
+### 最佳实践
+
+- 将「添加填空」操作添加为 Obsidian 热键可以大大节省时间！<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="350" />
+- 页面温习最佳伴侣：[Spaced Repetition #review 标签](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/)
+
 ## Q&As
+
+### cloze 可不可以增加提示呢
+
+因为自定义 cloze 的本质就是 html span 标签，所以你刚好可以用上标签的 title 属性！
+
+```html
+This a <span class="cloze-span" title="提示这么放即可">custom</span> cloze.
+```
+
+然后鼠标悬浮在 cloze 上，即可看到提示啦。
 
 ### 页面导出为 PDF时，填空的显隐状态如何控制？
 

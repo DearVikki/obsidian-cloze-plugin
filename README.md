@@ -4,6 +4,8 @@ English | [简体中文](./README-CN.md)
 
 Inspired from anki cards, this simple plugin for [Obsidian](https://obsidian.md/) enables you to create a cloze from highlighted, underlined, or bolded texts, as well as any selected text in reading mode.
 
+Update: FYI, I just found that there is a fantastic plugin called [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-repetition/) that works just as an Anki of Obsidian version, which also supports Cloze Cards. On the other hand, the Cloze plugin serves as more of a helper for reviewing pages/articles.
+
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/demo.gif" width="500" />
 
 ## Usage
@@ -50,17 +52,28 @@ Note that currently, it will also affect the default cloze visibility of the new
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
+### Best practices
+
+- Enable Obsidian hotkey for "Add Cloze" could save you enough time for making a cup of tea! <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="350" />
+- Cloze-mate: [Spaced Repetition #review flag](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/) is a best mate for reviewing pages.
+
 ## Q&As
 
-### What's the visibility of the clozes when the page is exported to PDF?
+### I would like a hint for the cloze.
 
-Sadly, it can only be "all visibile" or "all hidden" for the present.
+Since custom clozes are spans under the hood, using the HTML title attribute could do the trick for you. 
 
-Click the ribbon fish first, make sure that the page state is what you expect, and then click "export to PDF".
+You may edit the span in this way:
+
+```html
+This a <span class="cloze-span" title="some hints">custom</span> cloze.
+```
+
+And the hint will display when you hover the cloze.
 
 ### I would like another style for the cloze underlines.
 
-You can modify it by adding global custom CSS in this way:
+You may modify it by adding global custom CSS in this way:
 
 ```css
 .cloze-span {
@@ -69,6 +82,12 @@ You can modify it by adding global custom CSS in this way:
 	/** or any other styles */
 }
 ```
+
+### What's the visibility of the clozes when the page is exported to PDF?
+
+Sadly, it can only be "all visibile" or "all hidden" for the present.
+
+Click the ribbon fish first, make sure that the page state is what you expect, and then click "export to PDF".
 
 ## Installation
 
