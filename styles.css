@@ -19,15 +19,20 @@ If your plugin does not need CSS, delete this file.
     border-bottom: 1px solid var(--text-normal);
 }
 
-[data-mark-hide=true] {
+[data-cloze-hide=true]:not(.cloze-hint) {
 	color: transparent !important;
+	text-shadow: none !important;
+}
+.cloze-hint {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
 	text-shadow: none !important;
 }
 
 /* embedded segs */
-[data-mark-hide=true] mark,
-[data-mark-hide=true] u,
-[data-mark-hide=true] strong {
+[data-cloze-hide=true] mark,
+[data-cloze-hide=true] u,
+[data-cloze-hide=true] strong {
 	color: transparent !important;
 	text-shadow: none !important;
 }

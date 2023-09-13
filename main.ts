@@ -118,16 +118,26 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	hideClozeContent = (target: HTMLElement) => {
-		target.setAttribute('data-mark-hide', 'true');
+		target.setAttribute('data-cloze-hide', 'true');
+		if(target.getAttribute('data-cloze-hint')) {
+			target.classList.add('cloze-hint');
+			target.setAttribute('data-cloze-content', target.innerHTML)
+			target.innerHTML = target.getAttribute('data-cloze-hint') || '';
+		}
 	}
 
 	showClozeContent = (target: HTMLElement) => {
-		target.removeAttribute('data-mark-hide');
+		target.removeAttribute('data-cloze-hide');
+		if(target.getAttribute('data-cloze-hint')) {
+			target.classList.remove('cloze-hint');
+			target.innerHTML = target.getAttribute('data-cloze-content') || '';
+			target.removeAttribute('data-cloze-content');
+		}
 	}
 
 	toggleHide(target: HTMLElement) {
 		if (target.matches(this.clozeSelector())) {
-			if (target.getAttribute('data-mark-hide')) {
+			if (target.getAttribute('data-cloze-hide')) {
 				this.showClozeContent(target);
 			} else {
 				this.hideClozeContent(target);
