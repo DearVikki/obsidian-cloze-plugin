@@ -186,7 +186,7 @@ export default class ClozePlugin extends Plugin {
 	removeCloze = (editor: Editor) => {
 		const currentStr = editor.getSelection();
 		const newStr = currentStr
-			.replace(/<span class="cloze-span">(.*?)<\/span>/g, "$1");
+			.replace(/<span.*?class="cloze-span".*?>(.*?)<\/span>/g, "$1");
 		editor.replaceSelection(newStr);
 	};
 }
