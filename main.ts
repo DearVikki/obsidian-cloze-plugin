@@ -6,6 +6,7 @@ interface ClozePluginSettings {
 	includeHighlighted: boolean;
 	includeUnderlined: boolean;
 	includeBolded: boolean;
+	fixedClozeWidth: boolean;
 }
 
 const DEFAULT_SETTINGS: ClozePluginSettings = {
@@ -13,6 +14,19 @@ const DEFAULT_SETTINGS: ClozePluginSettings = {
 	includeHighlighted: false,
 	includeUnderlined: false,
 	includeBolded: false,
+	fixedClozeWidth: false,
+}
+
+const ATTRS = {
+	hide: 'data-cloze-hide',
+	hint: 'data-cloze-hint',
+	content: 'data-cloze-content',
+}
+
+const CLASSES = {
+	cloze: 'cloze',
+	hint: 'cloze-hint',
+	fixedWidth: 'cloze-fixed-width',
 }
 
 export default class ClozePlugin extends Plugin {
@@ -83,7 +97,10 @@ export default class ClozePlugin extends Plugin {
 		})
 
 		this.registerMarkdownPostProcessor((element, context) => {
-			element.classList.add('cloze');
+			element.classList.add(CLASSES.cloze);
+			if(this.settings.fixedClozeWidth) {
+				element.classList.add(CLASSES.fixedWidth);
+			}
 			this.toggleAllHide(element, this.isAllHide);
 		})
 
@@ -118,26 +135,26 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	hideClozeContent = (target: HTMLElement) => {
-		target.setAttribute('data-cloze-hide', 'true');
-		if(target.getAttribute('data-cloze-hint')) {
-			target.classList.add('cloze-hint');
-			target.setAttribute('data-cloze-content', target.innerHTML)
-			target.innerHTML = target.getAttribute('data-cloze-hint') || '';
+		target.setAttribute(ATTRS.hide, 'true');
+		if(target.getAttribute(ATTRS.hint)) {
+			target.classList.add(CLASSES.hint);
+			target.setAttribute(ATTRS.content, target.innerHTML)
+			target.innerHTML = target.getAttribute(ATTRS.hint) || '';
 		}
 	}
 
 	showClozeContent = (target: HTMLElement) => {
-		target.removeAttribute('data-cloze-hide');
-		if(target.getAttribute('data-cloze-hint')) {
-			target.classList.remove('cloze-hint');
-			target.innerHTML = target.getAttribute('data-cloze-content') || '';
-			target.removeAttribute('data-cloze-content');
+		target.removeAttribute(ATTRS.hide);
+		if(target.getAttribute(ATTRS.hint)) {
+			target.classList.remove(CLASSES.hint);
+			target.innerHTML = target.getAttribute(ATTRS.content) || '';
+			target.removeAttribute(ATTRS.content);
 		}
 	}
 
 	toggleHide(target: HTMLElement) {
 		if (target.matches(this.clozeSelector())) {
-			if (target.getAttribute('data-cloze-hide')) {
+			if (target.getAttribute(ATTRS.hide)) {
 				this.showClozeContent(target);
 			} else {
 				this.hideClozeContent(target);
@@ -226,6 +243,17 @@ class SettingTab extends PluginSettingTab {
 				.setValue(this.plugin.settings.includeUnderlined)
 				.onChange(value => {
 					this.plugin.settings.includeUnderlined = value;
+					this.plugin.saveSettings();
+				}))
+		
+		containerEl.createEl('h2', { text: lang.setting_custom_cloze });
+		new Setting(containerEl)
+			.setName(lang.setting_fixed_cloze_width)
+			.setDesc(lang.setting_fixed_cloze_width_desc)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.fixedClozeWidth)
+				.onChange(value => {
+					this.plugin.settings.fixedClozeWidth = value;
 					this.plugin.saveSettings();
 				}))
 		
