@@ -2,6 +2,8 @@ export interface Ilangs {
     add_cloze: string;
     remove_cloze: string;
     toggle_cloze: string;
+    setting_selector_tag: string;
+    setting_selector_tag_desc: string;
     setting_hide_by_default: string;
     setting_hide_by_default_desc: string;
     setting_auto_convert: string;
