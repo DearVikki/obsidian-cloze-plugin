@@ -13,6 +13,9 @@ const langs: Ilangs = {
     setting_bold_desc: "启用此设置后，所有**粗体文字**也将转换为填空。",
     setting_underline: "下划线文字",
     setting_underline_desc: "启用此设置后，所有<u>下划线文字</u>也将转换为填空。",
+    setting_custom_cloze: "自定义填空",
+    setting_fixed_cloze_width: "固定填空宽度",
+    setting_fixed_cloze_width_desc: "启用此设置后，所有自定义填空的宽度默认相同（可避免透露原文字长度）。",
 	setting_contact: "谢谢你的使用~ 欢迎反馈！戳这里："
 }
 

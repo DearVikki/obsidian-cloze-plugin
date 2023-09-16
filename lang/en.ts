@@ -13,7 +13,10 @@ const langs: Ilangs = {
     setting_bold_desc: 'Enable this setting, all **bolded texts** will be converted to cloze.',
     setting_underline: 'Underlined text',
     setting_underline_desc: 'Enable this setting, all <u>underlined texts</u> will be converted to cloze.',
-	setting_contact: 'Thank you for using Cloze! Any reply is welcomed',
+    setting_custom_cloze: 'Custom cloze',
+    setting_fixed_cloze_width: 'Fixed cloze width',
+    setting_fixed_cloze_width_desc: 'Enable this setting, all custom clozes will have the same default width, which helps to ensure that the original text length is not revealed.',
+	setting_contact: 'Thank you for using Cloze! Any feedback is welcomed',
 }
 
 export default langs;
