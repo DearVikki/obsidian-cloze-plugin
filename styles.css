@@ -47,6 +47,7 @@ body {
 	white-space: nowrap;
 	width: var(--cloze-fixed-width);
 	display: inline-block;
+	overflow: hidden;
 }
 
 /* cloze hint */
