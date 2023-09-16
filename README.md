@@ -22,14 +22,28 @@ By enabling the following three settings, the corresponding text will automatica
 
 #### Custom clozes
 
-By default, the plugin adds 2 menu items: "Add Cloze" and "Remove Cloze", which are only visible when text is selected. The selected text will be underlined to indicate it has been clozed.
+By default, the plugin adds 2 menu items: "Add Cloze" and "Remove Cloze", which are only visible when text is selected. The selected text will be underlined to indicate it has been clozed. Additionally, You can conveniently select and remove multiple clozed texts at once.
 
 <p>
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/add.png" width="280" />
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/remove.png" width="500" />
-</p>
+</p> 
 
-Note: When clozing text, a custom `<span></span>` will be added around the text. Therefore, if you intend to export the file, please ensure that all custom clozes have been removed. You can conveniently select and remove multiple clozed texts at once.
+##### Cloze hint
+
+Since clozes are html span tags under the hood, there're mainly two ways to display the hint.
+
+- Hint directly displays in the cloze. 
+
+  Add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" data-cloze-hint="your hint"></span>`
+
+- Hint displays when hovered over (only supported in PC).
+
+  Add `title="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" title="your hint"></span>`
+
+#### Fixed cloze width
+
+You may enable 'Fixed cloze width' in the settings, which helps to ensure that the original text length is not revealed.
 
 ### Utilizing clozes
 
@@ -52,36 +66,30 @@ Note that currently, it will also affect the default cloze visibility of the new
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
+### Customized styles
+
+There are certain style variables that you may customize via css snippets.
+
+Here is an example.
+
+```css
+body {
+	--cloze-underline-width: 2px;
+	--cloze-underline-style: dashed;
+	--cloze-underline-color: pink;
+	--cloze-hint-color: blue;
+	--cloze-hint-font-size: 30px;
+	--cloze-fixed-width: 10px; /* if fix-width enabled */
+}
+
+```
+
 ### Best practices
 
-- Enable Obsidian hotkey for "Add Cloze" could save you enough time for making a cup of tea! <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="700" />
+- Enable Obsidian hotkey for "Add Cloze" could save you enough time for a cup of tea! <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="700" />
 - Cloze-mate: [Spaced Repetition #review flag](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/) is a best mate for reviewing pages.
 
 ## Q&As
-
-### I would like a hint for the cloze.
-
-Since custom clozes are spans under the hood, using the HTML title attribute could do the trick for you. 
-
-You may edit the span in this way:
-
-```html
-This a <span class="cloze-span" title="some hints">custom</span> cloze.
-```
-
-And the hint will display when you hover the cloze.
-
-### I would like another style for the cloze underlines.
-
-You may modify it by adding global custom CSS in this way:
-
-```css
-.cloze-span {
-	border-bottom-color: blue;
- 	border-bottom-width: 2px;
-	/** or any other styles */
-}
-```
 
 ### What's the visibility of the clozes when the page is exported to PDF?
 

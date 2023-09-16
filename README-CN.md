@@ -31,7 +31,21 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/remove.png" width="500" />
 </p>
 
-Note：当自选文字被转换为填空时，会被加上一对自定义 `<span></span>` 标签。所以如果你对 markdown 原文本导出有需求，就需要先将自定义填空都移除掉喔。
+##### 填空提示
+
+因为填空的本质是 span 标签，所以有提供以下两种提示方式。
+
+- 提示直接显示在填空里
+
+  在填空的 span 标签里添加 `data-cloze-hint="提示内容"`，e.g. `<span class="cloze-span" data-cloze-hint="提示内容"></span>`
+
+- 鼠标 hover 填空时显示提示（仅支持电脑端） 
+
+  在填空的 span 标签里添加 `title="提示内容"`，e.g. `<span class="cloze-span" title="提示内容"></span>`
+
+##### 固定填空长度
+
+在设置里开启 固定填空长度 后，所有的填空长度将会保持一致，不随文本内容变化。可以通过自定义样式自定义固定填空长度。
 
 ### 使用
 
@@ -52,6 +66,24 @@ Note: 仅在阅读模式下有效。
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
+### 自定义样式
+
+可以通过自定义 CSS 设置如下样式变量:
+
+```css
+body {
+	/* 填空下划线相关 */
+	--cloze-underline-width: 2px;
+	--cloze-underline-style: dashed;
+	--cloze-underline-color: pink;
+	/* 填空提示 */
+	--cloze-hint-color: blue;
+	--cloze-hint-font-size: 30px;
+	/* 填空固定宽度（若开启） */
+	--cloze-fixed-width: 10px; 
+}
+```
+
 ### 最佳实践
 
 - 将「添加填空」操作添加为 Obsidian 热键可以大大节省时间！<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="800" />
@@ -59,34 +91,12 @@ Note: 仅在阅读模式下有效。
 
 ## Q&As
 
-### 想给 cloze 增加提示
-
-因为自定义 cloze 的本质就是 html span 标签，所以你刚好可以用上标签的 title 属性！
-
-```html
-This a <span class="cloze-span" title="提示这么放即可">custom</span> cloze.
-```
-
-然后鼠标悬浮在 cloze 上，即可看到提示啦。
-
 ### 页面导出为 PDF时，填空的显隐状态如何控制？
 
 目前只能为“全显”或是“全隐”。
 
 - 点击小鱼, 全局隐藏 --> 导出的 pdf 也隐
 - 点击小鱼, 全局显示 --> 导出的 pdf 显示
-
-### 我想要不一样的填空下划线样式
-
-你可以自己修改喔！全局 CSS 里调整如下 class 即可：
-
-```css
-.cloze-span {
-	border-bottom-color: blue;
- 	border-bottom-width: 2px;
-	/** or any other styles */
-}
-```
 
 ## 安装
 

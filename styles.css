@@ -6,28 +6,54 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+body {
+	--cloze-underline-width: 1px;
+	--cloze-underline-style: solid;
+	--cloze-underline-color: var(--text-normal);
+	--cloze-fixed-width: 30px;
+	--cloze-hint-color: var(--text-muted);
+	--cloze-hint-font-size: var(--font-ui-smaller);
+}
+
 .cloze .cloze-span,
 .cloze mark,
 .cloze u,
 .cloze strong {
     cursor: pointer;
+	display: inline-block;
 }
 
 .cloze-span,
 .cloze u,
 .cloze strong {
-    border-bottom: 1px solid var(--text-normal);
+    border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color);
 }
 
-[data-mark-hide=true] {
+[data-cloze-hide=true]:not(.cloze-hint) {
 	color: transparent !important;
 	text-shadow: none !important;
 }
 
 /* embedded segs */
-[data-mark-hide=true] mark,
-[data-mark-hide=true] u,
-[data-mark-hide=true] strong {
+[data-cloze-hide=true] mark,
+[data-cloze-hide=true] u,
+[data-cloze-hide=true] strong {
 	color: transparent !important;
 	text-shadow: none !important;
 }
+
+/* fixed cloze width */
+.cloze-fixed-width .cloze-span[data-cloze-hide=true]:not(.cloze-hint) {
+	white-space: nowrap;
+	width: var(--cloze-fixed-width);
+}
+
+/* cloze hint */
+.cloze-hint {
+	color: var(--cloze-hint-color);
+	font-size: var(--cloze-hint-font-size);
+	text-shadow: none !important;
+}
+
+
