@@ -82,7 +82,6 @@ body {
 	/* 填空固定宽度（若开启） */
 	--cloze-fixed-width: 10px; 
 }
-
 ```
 
 ### 最佳实践
@@ -92,34 +91,12 @@ body {
 
 ## Q&As
 
-### 想给 cloze 增加提示
-
-因为自定义 cloze 的本质就是 html span 标签，所以你刚好可以用上标签的 title 属性！
-
-```html
-This a <span class="cloze-span" title="提示这么放即可">custom</span> cloze.
-```
-
-然后鼠标悬浮在 cloze 上，即可看到提示啦。
-
 ### 页面导出为 PDF时，填空的显隐状态如何控制？
 
 目前只能为“全显”或是“全隐”。
 
 - 点击小鱼, 全局隐藏 --> 导出的 pdf 也隐
 - 点击小鱼, 全局显示 --> 导出的 pdf 显示
-
-### 我想要不一样的填空下划线样式
-
-你可以自己修改喔！全局 CSS 里调整如下 class 即可：
-
-```css
-.cloze-span {
-	border-bottom-color: blue;
- 	border-bottom-width: 2px;
-	/** or any other styles */
-}
-```
 
 ## 安装
 
