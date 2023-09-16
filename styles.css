@@ -21,7 +21,6 @@ body {
 .cloze u,
 .cloze strong {
     cursor: pointer;
-	display: inline-block;
 }
 
 .cloze-span,
@@ -47,6 +46,7 @@ body {
 .cloze-fixed-width .cloze-span[data-cloze-hide=true]:not(.cloze-hint) {
 	white-space: nowrap;
 	width: var(--cloze-fixed-width);
+	display: inline-block;
 }
 
 /* cloze hint */
