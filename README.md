@@ -22,26 +22,24 @@ By enabling the following three settings, the corresponding text will automatica
 
 #### Custom clozes
 
-By default, the plugin adds 2 menu items: "Add Cloze" and "Remove Cloze", which are only visible when text is selected. The selected text will be underlined to indicate it has been clozed.
+By default, the plugin adds 2 menu items: "Add Cloze" and "Remove Cloze", which are only visible when text is selected. The selected text will be underlined to indicate it has been clozed. Additionally, You can conveniently select and remove multiple clozed texts at once.
 
 <p>
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/add.png" width="280" />
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/remove.png" width="500" />
-</p>
-
-Note: When clozing text, a custom `<span></span>` will be added around the text. Therefore, if you intend to export the file, please ensure that all custom clozes have been removed. You can conveniently select and remove multiple clozed texts at once.
+</p> 
 
 ##### Cloze hint
 
-There're mainly two ways to display the hint.
+Since clozes are html span tags under the hood, there're mainly two ways to display the hint.
 
 - Hint directly displays in the cloze. 
 
-  Add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`
+  Add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" data-cloze-hint="your hint"></span>`
 
-- Hint displays when hovered.
+- Hint displays when hovered over (only supported in PC).
 
-  Add `title="your hint"` attribute to clozed `<span></span>`
+  Add `title="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" title="your hint"></span>`
 
 #### Fixed cloze width
 
@@ -78,10 +76,10 @@ Here is an example.
 body {
 	--cloze-underline-width: 2px;
 	--cloze-underline-style: dashed;
-	--cloze-underline-color: var(--text-normal);
-	--cloze-fixed-width: 10px;
+	--cloze-underline-color: pink;
 	--cloze-hint-color: blue;
 	--cloze-hint-font-size: 30px;
+	--cloze-fixed-width: 10px; /* if fix-width enabled */
 }
 
 ```
