@@ -60,6 +60,8 @@ export default class ClozePlugin extends Plugin {
 				menu: Menu,
 				editor: Editor
 			): void => {
+				console.log("does this work?");
+
 				const selection = editor.getSelection();
 				if (selection && this.checkTags()) {
 					menu.addItem((item) => {
@@ -115,10 +117,26 @@ export default class ClozePlugin extends Plugin {
 		})
 
 		this.registerMarkdownPostProcessor((element, context) => {
-//			element.classList.add(CLASSES.cloze);
+			// element.classList.add(CLASSES.cloze);
+			console.log("gra...");
 			if(this.settings.fixedClozeWidth) {
 				element.classList.add(CLASSES.fixedWidth);
 			}
+
+
+			if (this.settings.includeUnderlined) {
+				const innerHTML : string = element.innerHTML;
+				console.log("innerHTML: "+innerHTML);
+				if(innerHTML.indexOf("<u>")>=0) {
+					const wrappedInnerHTML = `<span class="cloze">${innerHTML}</span>`;
+					const newElement = document.createElement('div');
+					newElement.innerHTML = wrappedInnerHTML;
+					element.replaceWith(...Array.from(newElement.childNodes));
+					console.log("element after replace: "+ newElement.innerHTML);
+				}
+			}
+
+
 			this.toggleAllHide(element, this.isAllHide);
 		})
 	}

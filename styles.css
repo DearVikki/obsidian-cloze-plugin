@@ -16,18 +16,23 @@ body {
 	--cloze-hint-font-size: var(--font-ui-smaller);
 }
 
-.cloze .cloze-span,
-.cloze mark,
-.cloze u,
-.cloze strong {
+.cloze-span,
+mark[data-cloze-hide=true],
+u[data-cloze-hide=true],
+strong[data-cloze-hide=true] {
     cursor: pointer;
 	display: inline-block;
 }
 
 .cloze-span,
-.cloze u,
-.cloze strong {
-    border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color);
+u[data-cloze-hide=true],
+strong[data-cloze-hide=true],
+mark[data-cloze-hide=true] {
+    border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
+}
+
+.cloze u {
+	color: red;
 }
 
 [data-cloze-hide=true]:not(.cloze-hint) {
