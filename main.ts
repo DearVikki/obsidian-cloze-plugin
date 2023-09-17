@@ -118,28 +118,36 @@ export default class ClozePlugin extends Plugin {
 
 		this.registerMarkdownPostProcessor((element, context) => {
 			// element.classList.add(CLASSES.cloze);
-			console.log("gra...");
+			console.log("registerMarkdownPostProcessor");
 			if(this.settings.fixedClozeWidth) {
 				element.classList.add(CLASSES.fixedWidth);
 			}
 
 
 			if (this.settings.includeUnderlined) {
-				const innerHTML : string = element.innerHTML;
-				console.log("innerHTML: "+innerHTML);
-				if(innerHTML.indexOf("<u>")>=0) {
-					const wrappedInnerHTML = `<span class="cloze">${innerHTML}</span>`;
-					const newElement = document.createElement('div');
-					newElement.innerHTML = wrappedInnerHTML;
-					element.replaceWith(...Array.from(newElement.childNodes));
-					console.log("element after replace: "+ newElement.innerHTML);
-				}
+				element.querySelectorAll('u').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
 			}
-
+			if (this.settings.includeBolded) {
+				element.querySelectorAll('strong').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+				element.querySelectorAll('bold').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+			}
+			if (this.settings.includeHighlighted) {
+				element.querySelectorAll('mark').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+			}
 
 			this.toggleAllHide(element, this.isAllHide);
 		})
+		
 	}
+
 
 
 	// Extract and verify tags - works in both preview and edit mode

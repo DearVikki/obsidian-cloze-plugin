@@ -25,9 +25,9 @@ strong[data-cloze-hide=true] {
 }
 
 .cloze-span,
-u[data-cloze-hide=true],
-strong[data-cloze-hide=true],
-mark[data-cloze-hide=true] {
+.cloze u,
+.cloze strong,
+.cloze mark {
     border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
 }
 
