@@ -64,6 +64,10 @@ Note that currently, it will also affect the default cloze visibility of the new
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
+### Activation
+
+The plugin is active on all notes by default, but you can configure it to only activate on notes with a specific tag. Simply provide the desired tag in the 'Required tag' setting.
+
 ### Customized styles
 
 There are certain style variables that you may customize via css snippets.
@@ -81,10 +85,6 @@ body {
 }
 
 ```
-
-#### Activation
-
-The plugin is active on all notes by default, but you can configure it to only activate on notes with a specific tag. Simply provide the desired tag in the 'Required tag' setting.
 
 ### Best practices
 
