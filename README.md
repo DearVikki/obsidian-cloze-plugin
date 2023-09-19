@@ -47,11 +47,9 @@ You may enable 'Fixed cloze width' in the settings, which helps to ensure that t
 
 ### Utilizing clozes
 
-Note: it only works in reading mode. Everything remains same in editing mode.
-
 #### Single cloze
 
-To toggle the visibility of a cloze area, simply click on it. 
+To toggle the visibility of a cloze area, simply click on it. Note it only works in reading mode. Everything remains same in editing mode.
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/enable_highlight.gif" width="400" />
 
@@ -74,15 +72,19 @@ Here is an example.
 
 ```css
 body {
+	--cloze-underline-color: pink;
 	--cloze-underline-width: 2px;
 	--cloze-underline-style: dashed;
-	--cloze-underline-color: pink;
 	--cloze-hint-color: blue;
 	--cloze-hint-font-size: 30px;
 	--cloze-fixed-width: 10px; /* if fix-width enabled */
 }
 
 ```
+
+#### Activation
+
+The plugin is active on all notes by default, but you can configure it to only activate on notes with a specific tag. Simply provide the desired tag in the 'Required tag' setting.
 
 ### Best practices
 

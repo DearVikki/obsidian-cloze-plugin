@@ -5,7 +5,7 @@ const langs: Ilangs = {
     remove_cloze: 'Remove cloze',
     toggle_cloze: 'Toggle all clozes',
     setting_selector_tag:'Required tag',
-    setting_selector_tag_desc: 'If you provide a tag here, the plugin will only activate on notes with that tag.',
+    setting_selector_tag_desc: 'If you provide a tag here, the plugin will only activate on notes with that tag i.e. #cloze.',
     setting_hide_by_default: 'Hide by default',
     setting_hide_by_default_desc: 'Enable this setting, all clozes will be hidden by default when reading the page. 🙈',
     setting_auto_convert: 'Auto Convert',

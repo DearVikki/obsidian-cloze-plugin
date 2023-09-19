@@ -47,13 +47,13 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 
 在设置里开启 固定填空长度 后，所有的填空长度将会保持一致，不随文本内容变化。可以通过自定义样式自定义固定填空长度。
 
-### 使用
+### 查看
 
 Note: 仅在阅读模式下有效。
 
 #### 单个填空
 
-点击切换单个填空的显隐。 
+点击切换单个填空的显隐，仅在阅读模式下有效。 
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/enable_highlight.gif" width="400" />
 
@@ -73,16 +73,20 @@ Note: 仅在阅读模式下有效。
 ```css
 body {
 	/* 填空下划线相关 */
-	--cloze-underline-width: 2px;
-	--cloze-underline-style: dashed;
-	--cloze-underline-color: pink;
+	--cloze-underline-color: pink; /* 填空下划线颜色 */
+	--cloze-underline-width: 2px; /* 填空下划线粗细 */
+	--cloze-underline-style: dashed; /* 填空下划线样式 solid | dashed | dotted */
 	/* 填空提示 */
-	--cloze-hint-color: blue;
-	--cloze-hint-font-size: 30px;
+	--cloze-hint-color: blue; /* 填空提示颜色 */
+	--cloze-hint-font-size: 30px; /* 填空提示字体大小 */
 	/* 填空固定宽度（若开启） */
 	--cloze-fixed-width: 10px; 
 }
 ```
+
+### 特定页面启用
+
+通过设置里的「作用标签」设置标签后，该插件将仅作用于带有该标签的笔记上，默认空则作用于所有笔记。
 
 ### 最佳实践
 

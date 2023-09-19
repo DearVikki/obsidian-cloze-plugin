@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Menu, Editor, MarkdownView } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Menu, Editor, MarkdownView, Notice } from 'obsidian';
 import lang from './lang';
 
 interface ClozePluginSettings {
@@ -52,7 +52,9 @@ export default class ClozePlugin extends Plugin {
 		this.addSettingTab(new SettingTab(this.app, this));
 
 		this.registerDomEvent(document, 'click', (event) => {
-			if (this.checkTags()) this.toggleHide(event.target as HTMLElement);
+			if (this.isPreviewMode() && this.checkTags()) { 
+				this.toggleHide(event.target as HTMLElement);
+			}
 		});
 
 		this.registerEvent(
@@ -60,8 +62,6 @@ export default class ClozePlugin extends Plugin {
 				menu: Menu,
 				editor: Editor
 			): void => {
-				console.log("does this work?");
-
 				const selection = editor.getSelection();
 				if (selection && this.checkTags()) {
 					menu.addItem((item) => {
@@ -117,38 +117,26 @@ export default class ClozePlugin extends Plugin {
 		})
 
 		this.registerMarkdownPostProcessor((element, context) => {
-			// element.classList.add(CLASSES.cloze);
-			console.log("registerMarkdownPostProcessor");
-			if(this.settings.fixedClozeWidth) {
-				element.classList.add(CLASSES.fixedWidth);
+			if (this.checkTags()) {
+				const containerEl = (context as any).containerEl as HTMLElement;
+				if (!containerEl) {
+					new Notice('Cloze plugin: No containerEl.')
+					return;
+				}
+				containerEl.classList.add(CLASSES.cloze);
+				if(this.settings.fixedClozeWidth) {
+					containerEl.classList.add(CLASSES.fixedWidth);
+				}
 			}
-
-
-			if (this.settings.includeUnderlined) {
-				element.querySelectorAll('u').forEach((uElement) => {
-					uElement.parentElement?.classList.add('cloze');
-				});
-			}
-			if (this.settings.includeBolded) {
-				element.querySelectorAll('strong').forEach((uElement) => {
-					uElement.parentElement?.classList.add('cloze');
-				});
-				element.querySelectorAll('bold').forEach((uElement) => {
-					uElement.parentElement?.classList.add('cloze');
-				});
-			}
-			if (this.settings.includeHighlighted) {
-				element.querySelectorAll('mark').forEach((uElement) => {
-					uElement.parentElement?.classList.add('cloze');
-				});
-			}
-
+			
 			this.toggleAllHide(element, this.isAllHide);
 		})
 		
 	}
 
-
+	private isPreviewMode(): boolean {
+		return this.app.workspace.getActiveViewOfType(MarkdownView)?.getMode() === 'preview';
+	}
 
 	// Extract and verify tags - works in both preview and edit mode
 	private checkTags(): boolean {
@@ -158,27 +146,21 @@ export default class ClozePlugin extends Plugin {
 
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 		if (activeView) {
-			const editor = activeView.editor;
-			const content = editor.getValue();
-			const tags = this.extractTags(content);
-			return tags.some(tag => tag.toLowerCase() === this.settings.selectorTag.slice(1).toLowerCase());
-		} else {
-			return false;
+			const { app, file } = activeView;
+			if (file) {
+				const cachedMetadata = app.metadataCache.getFileCache(file);
+				const tags = (cachedMetadata?.tags || []).map(t => t.tag);
+				const frontmatterTags = cachedMetadata?.frontmatter?.tags || [];
+				return [...frontmatterTags, ...tags].some((t:string) => {
+					if(!t.startsWith('#')) {
+						t = '#' + t;
+					}
+					return t.toLowerCase() === this.settings.selectorTag.toLowerCase();
+				});
+			}
 		}
+		return false;
 	}
-
-
-	// Identify any unicode valid tag - also in different languages
-	private extractTags(content: string): string[] {
-		const tagRegex = /#([\p{L}\p{N}_-]+)/gu;
-		let match;
-		const tags = [];
-		while ((match = tagRegex.exec(content)) !== null) {
-			tags.push(match[1]);
-		}
-		return tags;
-	}
-
 
 	onunload() {
 
@@ -211,20 +193,26 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	hideClozeContent = (target: HTMLElement) => {
-		target.setAttribute(ATTRS.hide, 'true');                      // add attribute: data-cloze-hide: true
-		if(target.getAttribute(ATTRS.hint)) {                         // if we have attribute: data-cloze-hint then
-			target.classList.add(CLASSES.hint);                          // add .cloze-hint class
-			target.setAttribute(ATTRS.content, target.innerHTML)         // store original in attribute:data-cloze-content
-			target.innerHTML = target.getAttribute(ATTRS.hint) || '';    // restore HTML from attribute:data-cloze-hint or ''
+		if(!target.getAttribute(ATTRS.hide)) {                         
+			if(target.getAttribute(ATTRS.hint)) { 							// if we have attribute: data-cloze-hint then
+				target.setAttribute(ATTRS.content, target.innerHTML)         // store original in attribute:data-cloze-content
+				target.innerHTML = target.getAttribute(ATTRS.hint) || '';    // restore HTML from attribute:data-cloze-hint or ''
+				target.removeAttribute(ATTRS.hint);
+				target.classList.add(CLASSES.hint);                          // add .cloze-hint class
+			}
+			target.setAttribute(ATTRS.hide, 'true');                      // add attribute: data-cloze-hide: true
 		}
 	}
 
 	showClozeContent = (target: HTMLElement) => {
-		target.removeAttribute(ATTRS.hide);        					  // remove attribute: data-cloze-hide:true
-		if(target.getAttribute(ATTRS.hint)) {      					  // if we have attribute: data-cloze-hint then
-			target.classList.remove(CLASSES.hint);    				     // remove .cloze-hint class
-			target.innerHTML = target.getAttribute(ATTRS.content) || ''; // restore innerHTML from attribute: data-cloze-content or ''
-			target.removeAttribute(ATTRS.content);                       // remove attribute: data-cloze-content
+		if(target.getAttribute(ATTRS.hide)) {      					  
+			if(target.getAttribute(ATTRS.content)) { 							// if we have attribute: data-cloze-content then
+				target.setAttribute(ATTRS.hint, target.innerHTML)         	// store original in attribute:data-cloze-content
+				target.innerHTML = target.getAttribute(ATTRS.content) || ''; // restore innerHTML from attribute: data-cloze-content or ''
+				target.removeAttribute(ATTRS.content);                       // remove attribute: data-cloze-content
+				target.classList.remove(CLASSES.hint);    				     // remove .cloze-hint class
+			}
+			target.removeAttribute(ATTRS.hide);        					  // remove attribute: data-cloze-hide:true
 		}
 	}
 
