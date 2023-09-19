@@ -12,7 +12,7 @@ interface ClozePluginSettings {
 
 const DEFAULT_SETTINGS: ClozePluginSettings = {
 	defaultHide: true,
-	selectorTag: "",
+	selectorTag: "#",
 	includeHighlighted: false,
 	includeUnderlined: false,
 	includeBolded: false,
@@ -140,7 +140,7 @@ export default class ClozePlugin extends Plugin {
 
 	// Extract and verify tags - works in both preview and edit mode
 	private checkTags(): boolean {
-		if (this.settings.selectorTag === "#") { // Skip of this feature is not used
+		if (this.settings.selectorTag === '' || this.settings.selectorTag === "#") { // Skip of this feature is not used
 			return true;
 		}
 
