@@ -1,8 +1,9 @@
-import { App, Plugin, PluginSettingTab, Setting, Menu, Editor } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Menu, Editor, MarkdownView } from 'obsidian';
 import lang from './lang';
 
 interface ClozePluginSettings {
 	defaultHide: boolean;
+	selectorTag: string;
 	includeHighlighted: boolean;
 	includeUnderlined: boolean;
 	includeBolded: boolean;
@@ -11,6 +12,7 @@ interface ClozePluginSettings {
 
 const DEFAULT_SETTINGS: ClozePluginSettings = {
 	defaultHide: true,
+	selectorTag: "",
 	includeHighlighted: false,
 	includeUnderlined: false,
 	includeBolded: false,
@@ -50,7 +52,7 @@ export default class ClozePlugin extends Plugin {
 		this.addSettingTab(new SettingTab(this.app, this));
 
 		this.registerDomEvent(document, 'click', (event) => {
-			this.toggleHide(event.target as HTMLElement);
+			if (this.checkTags()) this.toggleHide(event.target as HTMLElement);
 		});
 
 		this.registerEvent(
@@ -58,8 +60,10 @@ export default class ClozePlugin extends Plugin {
 				menu: Menu,
 				editor: Editor
 			): void => {
+				console.log("does this work?");
+
 				const selection = editor.getSelection();
-				if (selection) {
+				if (selection && this.checkTags()) {
 					menu.addItem((item) => {
 						item
 							.setTitle(lang.add_cloze)
@@ -82,8 +86,16 @@ export default class ClozePlugin extends Plugin {
 			id: "add-cloze",
 			name: lang.add_cloze,
 			icon: "fish",
-			editorCallback: (editor, context) => {
-				this.addCloze(editor);
+			editorCheckCallback: (checking, editor, ctx) => {
+				const selection = editor.getSelection();
+				if (selection && this.checkTags()) {
+					if (!checking) {
+						this.addCloze(editor);
+					}
+					return true;
+				} else {
+					return false;
+				}
 			}
 		})
 
@@ -91,20 +103,82 @@ export default class ClozePlugin extends Plugin {
 			id: "remove-cloze",
 			name: lang.remove_cloze,
 			icon: "fish-off",
-			editorCallback: async (editor: Editor) => {
-				this.removeCloze(editor);
+			editorCheckCallback: (checking, editor, ctx) => {
+				const selection = editor.getSelection();
+				if (selection && this.checkTags()) {
+					if (!checking) {
+						this.removeCloze(editor);
+					}
+					return true;
+				} else {
+					return false;
+				}
 			},
 		})
 
 		this.registerMarkdownPostProcessor((element, context) => {
-			element.classList.add(CLASSES.cloze);
+			// element.classList.add(CLASSES.cloze);
+			console.log("registerMarkdownPostProcessor");
 			if(this.settings.fixedClozeWidth) {
 				element.classList.add(CLASSES.fixedWidth);
 			}
+
+
+			if (this.settings.includeUnderlined) {
+				element.querySelectorAll('u').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+			}
+			if (this.settings.includeBolded) {
+				element.querySelectorAll('strong').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+				element.querySelectorAll('bold').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+			}
+			if (this.settings.includeHighlighted) {
+				element.querySelectorAll('mark').forEach((uElement) => {
+					uElement.parentElement?.classList.add('cloze');
+				});
+			}
+
 			this.toggleAllHide(element, this.isAllHide);
 		})
-
+		
 	}
+
+
+
+	// Extract and verify tags - works in both preview and edit mode
+	private checkTags(): boolean {
+		if (this.settings.selectorTag === "#") { // Skip of this feature is not used
+			return true;
+		}
+
+		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		if (activeView) {
+			const editor = activeView.editor;
+			const content = editor.getValue();
+			const tags = this.extractTags(content);
+			return tags.some(tag => tag.toLowerCase() === this.settings.selectorTag.slice(1).toLowerCase());
+		} else {
+			return false;
+		}
+	}
+
+
+	// Identify any unicode valid tag - also in different languages
+	private extractTags(content: string): string[] {
+		const tagRegex = /#([\p{L}\p{N}_-]+)/gu;
+		let match;
+		const tags = [];
+		while ((match = tagRegex.exec(content)) !== null) {
+			tags.push(match[1]);
+		}
+		return tags;
+	}
+
 
 	onunload() {
 
@@ -121,34 +195,36 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	clozeSelector = () => {
-		const selectors = ['.cloze .cloze-span'];
+		const selectors = ['.cloze-span'];
 		if (this.settings.includeHighlighted) {
-			selectors.push('.cloze mark');
+			selectors.push('mark');
+			selectors.push('.cm-highlight');
 		}
 		if (this.settings.includeUnderlined) {
-			selectors.push('.cloze u');
+			selectors.push('u');
 		}
 		if (this.settings.includeBolded) {
-			selectors.push('.cloze strong');
+			selectors.push('strong');
+			selectors.push('.cm-strong');
 		}
 		return selectors.join(', ');
 	}
 
 	hideClozeContent = (target: HTMLElement) => {
-		target.setAttribute(ATTRS.hide, 'true');
-		if(target.getAttribute(ATTRS.hint)) {
-			target.classList.add(CLASSES.hint);
-			target.setAttribute(ATTRS.content, target.innerHTML)
-			target.innerHTML = target.getAttribute(ATTRS.hint) || '';
+		target.setAttribute(ATTRS.hide, 'true');                      // add attribute: data-cloze-hide: true
+		if(target.getAttribute(ATTRS.hint)) {                         // if we have attribute: data-cloze-hint then
+			target.classList.add(CLASSES.hint);                          // add .cloze-hint class
+			target.setAttribute(ATTRS.content, target.innerHTML)         // store original in attribute:data-cloze-content
+			target.innerHTML = target.getAttribute(ATTRS.hint) || '';    // restore HTML from attribute:data-cloze-hint or ''
 		}
 	}
 
 	showClozeContent = (target: HTMLElement) => {
-		target.removeAttribute(ATTRS.hide);
-		if(target.getAttribute(ATTRS.hint)) {
-			target.classList.remove(CLASSES.hint);
-			target.innerHTML = target.getAttribute(ATTRS.content) || '';
-			target.removeAttribute(ATTRS.content);
+		target.removeAttribute(ATTRS.hide);        					  // remove attribute: data-cloze-hide:true
+		if(target.getAttribute(ATTRS.hint)) {      					  // if we have attribute: data-cloze-hint then
+			target.classList.remove(CLASSES.hint);    				     // remove .cloze-hint class
+			target.innerHTML = target.getAttribute(ATTRS.content) || ''; // restore innerHTML from attribute: data-cloze-content or ''
+			target.removeAttribute(ATTRS.content);                       // remove attribute: data-cloze-content
 		}
 	}
 
@@ -163,15 +239,17 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	toggleAllHide(dom: HTMLElement | Document = document, hide: boolean) {
-		const marks = dom.querySelectorAll<HTMLElement>(this.clozeSelector());
-		if (hide) {
-			marks.forEach((mark) => {
-				this.hideClozeContent(mark);
-			})
-		} else {
-			marks.forEach((mark) => {
-				this.showClozeContent(mark);
-			})
+		if (this.checkTags()) {
+			const marks = dom.querySelectorAll<HTMLElement>(this.clozeSelector());
+			if (hide) {
+				marks.forEach((mark) => {
+					this.hideClozeContent(mark);
+				})
+			} else {
+				marks.forEach((mark) => {
+					this.showClozeContent(mark);
+				})
+			}
 		}
 	}
 
@@ -189,6 +267,7 @@ export default class ClozePlugin extends Plugin {
 			.replace(/<span.*?class="cloze-span".*?>(.*?)<\/span>/g, "$1");
 		editor.replaceSelection(newStr);
 	};
+
 }
 
 class SettingTab extends PluginSettingTab {
@@ -204,6 +283,16 @@ class SettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 		containerEl.createEl("h1", { text: "Cloze" });
+
+		new Setting(containerEl)
+		.setName(lang.setting_selector_tag)
+		.setDesc(lang.setting_selector_tag_desc)
+		.addText((text) => text
+			.setValue(this.plugin.settings.selectorTag)
+			.onChange(async (value) => {
+				this.plugin.settings.selectorTag = this.sanitizeTag(value);
+				await this.plugin.saveSettings();
+			}))
 
 		new Setting(containerEl)
 			.setName(lang.setting_hide_by_default)
@@ -264,5 +353,21 @@ class SettingTab extends PluginSettingTab {
 			text: "here",
 			href: "https://github.com/DearVikki/obsidian-cloze-plugin/issues",
 		});
+	}
+
+
+	// Check and clean up tags that are not (what I understand to be) well formed Obsidian tags.
+	sanitizeTag(tagInput: string): string {
+		const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
+
+		// Remove initial '#' if present
+		const tagBody = tagInput.startsWith('#') ? tagInput.slice(1) : tagInput;
+		if (allowedCharacters.test(tagBody)) {
+			return '#' + tagBody;
+		}
+
+		// Hopefully never needed, this is where we replace disallowed characters with underscores
+		const sanitizedTagBody = tagBody.replace(/[^a-zA-Z0-9-_]/g, '_');
+		return '#' + sanitizedTagBody;
 	}
 }

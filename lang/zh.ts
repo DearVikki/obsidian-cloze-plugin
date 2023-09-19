@@ -4,6 +4,8 @@ const langs: Ilangs = {
     add_cloze: "添加填空",
     remove_cloze: "移除填空",
     toggle_cloze: "显/隐所有填空",
+    setting_selector_tag:"必填标签",
+    setting_selector_tag_desc: "如果您在这里提供一个标签，该插件将仅在带有该标签的笔记上激活。",
     setting_hide_by_default: "默认隐藏",
     setting_hide_by_default_desc: "启用此设置后，打开页面时所有填空内容将默认隐藏。🙈",
     setting_auto_convert: "自动转换",
