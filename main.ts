@@ -27,6 +27,9 @@ const ATTRS = {
 
 const CLASSES = {
 	cloze: 'cloze',
+	highlight: 'cloze-highlight',
+	bold: 'cloze-bold',
+	underline: 'cloze-underline',
 	hint: 'cloze-hint',
 	fixedWidth: 'cloze-fixed-width',
 }
@@ -123,10 +126,8 @@ export default class ClozePlugin extends Plugin {
 					new Notice('Cloze plugin: No containerEl.')
 					return;
 				}
-				containerEl.classList.add(CLASSES.cloze);
-				if(this.settings.fixedClozeWidth) {
-					containerEl.classList.add(CLASSES.fixedWidth);
-				}
+				element.querySelectorAll<HTMLElement>(this.clozeSelector())
+						.forEach(el => el.classList.add(CLASSES.cloze));
 			}
 			
 			this.toggleAllHide(element, this.isAllHide);

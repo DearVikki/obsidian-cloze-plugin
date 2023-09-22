@@ -16,17 +16,13 @@ body {
 	--cloze-hint-font-size: var(--font-ui-smaller);
 }
 
-.cloze .cloze-span,
-.cloze mark[data-cloze-hide=true],
-.cloze u[data-cloze-hide=true],
-.cloze strong[data-cloze-hide=true] {
+.cloze-span,
+.cloze[data-cloze-hide=true]{
     cursor: pointer;
 }
 
 .cloze-span,
-.cloze u,
-.cloze strong,
-.cloze mark {
+.cloze{
     border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
 }
 
@@ -44,11 +40,7 @@ body {
 }
 
 /* fixed cloze width */
-.cloze-fixed-width .cloze-span[data-cloze-hide=true]:not(.cloze-hint), 
-.cloze-fixed-width mark[data-cloze-hide=true],
-.cloze-fixed-width u[data-cloze-hide=true],
-.cloze-fixed-width strong[data-cloze-hide=true]
-{
+.cloze-fixed-width .cloze[data-cloze-hide=true]:not(.cloze-hint) {
 	white-space: nowrap;
 	width: var(--cloze-fixed-width);
 	display: inline-block;
