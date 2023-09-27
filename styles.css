@@ -54,4 +54,6 @@ body {
 	text-shadow: none !important;
 }
 
-
+.modal-hint-setting input{
+	width: 100%;
+}

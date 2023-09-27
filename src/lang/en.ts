@@ -2,6 +2,7 @@ import { Ilangs } from './types';
 
 const langs: Ilangs = {
     add_cloze: 'Add cloze',
+	add_cloze_with_hint: 'Add cloze with hint',
     remove_cloze: 'Remove cloze',
     toggle_cloze: 'Toggle all clozes',
     setting_selector_tag:'Required tag',
@@ -15,9 +16,13 @@ const langs: Ilangs = {
     setting_bold_desc: 'Enable this setting, all **bolded texts** will be converted to cloze.',
     setting_underline: 'Underlined text',
     setting_underline_desc: 'Enable this setting, all <u>underlined texts</u> will be converted to cloze.',
-    setting_custom_cloze: 'Custom cloze',
+	setting_editor_menu: 'Editor menu',
+	setting_editor_menu_add_cloze: 'Display add cloze button',
+	setting_editor_menu_add_cloze_with_hint: 'Display add cloze with hint button',
+	setting_editor_menu_remove_cloze: 'Display remove cloze button',
+    setting_custom_setting: 'Custom settings',
     setting_fixed_cloze_width: 'Fixed cloze width',
-    setting_fixed_cloze_width_desc: 'Enable this setting, all custom clozes will have the same default width, which helps to ensure that the original text length is not revealed.',
+    setting_fixed_cloze_width_desc: 'Enable this setting, clozes will have the same default width, which helps to ensure that the original text length is not revealed.',
 	setting_contact: 'Thank you for using Cloze! Any feedback is welcomed',
 }
 

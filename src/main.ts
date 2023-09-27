@@ -1,23 +1,8 @@
-import { App, Plugin, PluginSettingTab, Setting, Menu, Editor, MarkdownView, Notice } from 'obsidian';
+import { App, Plugin, Menu, Editor, MarkdownView, Notice } from 'obsidian';
 import lang from './lang';
-
-interface ClozePluginSettings {
-	defaultHide: boolean;
-	selectorTag: string;
-	includeHighlighted: boolean;
-	includeUnderlined: boolean;
-	includeBolded: boolean;
-	fixedClozeWidth: boolean;
-}
-
-const DEFAULT_SETTINGS: ClozePluginSettings = {
-	defaultHide: true,
-	selectorTag: "#",
-	includeHighlighted: false,
-	includeUnderlined: false,
-	includeBolded: false,
-	fixedClozeWidth: false,
-}
+import DEFAULT_SETTINGS, { ClozePluginSettings } from './settings/settingData';
+import SettingTab from './settings/settingTab';
+import HintModal from './components/modal-hint';
 
 const ATTRS = {
 	hide: 'data-cloze-hide',
@@ -43,23 +28,27 @@ export default class ClozePlugin extends Plugin {
 		console.log('load cloze plugin');
 
 		await this.loadSettings();
-
-		// This creates an icon in the left ribbon.
-		this.addRibbonIcon('fish', lang.toggle_cloze, (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			this.toggleAllHide(document, !this.isAllHide);
-			this.isAllHide = !this.isAllHide;
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SettingTab(this.app, this));
-
+		this.initRibbon();
 		this.registerDomEvent(document, 'click', (event) => {
 			if (this.isPreviewMode() && this.checkTags()) { 
 				this.toggleHide(event.target as HTMLElement);
 			}
 		});
+		this.initEditorMenu();
+		this.initCommand();
+		this.initMarkdownPostProcessor();
+	}
 
+	private initRibbon() {
+		this.addRibbonIcon('fish', lang.toggle_cloze, (evt: MouseEvent) => {
+			// Called when the user clicks the icon.
+			this.toggleAllHide(document, !this.isAllHide);
+			this.isAllHide = !this.isAllHide;
+		});
+	}
+
+	private initEditorMenu() {
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (
 				menu: Menu,
@@ -67,34 +56,63 @@ export default class ClozePlugin extends Plugin {
 			): void => {
 				const selection = editor.getSelection();
 				if (selection && this.checkTags()) {
-					menu.addItem((item) => {
-						item
-							.setTitle(lang.add_cloze)
-							.onClick((e) => {
-								this.addCloze(editor);
-							});
-					});
-					menu.addItem((item) => {
-						item
-							.setTitle(lang.remove_cloze)
-							.onClick((e) => {
-								this.removeCloze(editor);
-							});
-					});
+					if(this.settings.editorMenuAddCloze) {
+						menu.addItem((item) => {
+							item
+								.setTitle(lang.add_cloze)
+								.onClick((e) => {
+									this.addCloze(editor);
+								});
+						});
+					}
+					if (this.settings.editorMenuAddClozeWithHint) {
+						menu.addItem((item) => {
+							item
+								.setTitle(lang.add_cloze_with_hint)
+								.onClick((e) => {
+									this.addCloze(editor, true);
+								});
+						});
+					}
+					if (this.settings.editorMenuRemoveCloze) {
+						menu.addItem((item) => {
+							item
+								.setTitle(lang.remove_cloze)
+								.onClick((e) => {
+									this.removeCloze(editor);
+								});
+						});
+					}
+					
 				}
 			})
 		);
+	}
 
+	private initCommand() {
 		this.addCommand({
 			id: "add-cloze",
 			name: lang.add_cloze,
 			icon: "fish",
 			editorCheckCallback: (checking, editor, ctx) => {
 				const selection = editor.getSelection();
-				if (selection && this.checkTags()) {
-					if (!checking) {
-						this.addCloze(editor);
-					}
+				if (selection && this.checkTags() && !checking) {
+					this.addCloze(editor);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		})
+
+		this.addCommand({
+			id: "add-cloze-with-hint",
+			name: lang.add_cloze_with_hint,
+			icon: "fish-symbol",
+			editorCheckCallback: (checking, editor, ctx) => {
+				const selection = editor.getSelection();
+				if (selection && this.checkTags() && !checking) {
+					this.addCloze(editor, true);
 					return true;
 				} else {
 					return false;
@@ -108,31 +126,33 @@ export default class ClozePlugin extends Plugin {
 			icon: "fish-off",
 			editorCheckCallback: (checking, editor, ctx) => {
 				const selection = editor.getSelection();
-				if (selection && this.checkTags()) {
-					if (!checking) {
-						this.removeCloze(editor);
-					}
+				if (selection && this.checkTags() && !checking) {
+					this.removeCloze(editor);
 					return true;
 				} else {
 					return false;
 				}
 			},
 		})
+	}
 
+	private initMarkdownPostProcessor() {
 		this.registerMarkdownPostProcessor((element, context) => {
 			if (this.checkTags()) {
-				const containerEl = (context as any).containerEl as HTMLElement;
-				if (!containerEl) {
-					new Notice('Cloze plugin: No containerEl.')
-					return;
+				if (this.settings.fixedClozeWidth) {
+					const containerEl = (context as any).containerEl as HTMLElement;
+					if (containerEl) {
+						containerEl.classList.add(CLASSES.fixedWidth);
+					} else {
+						new Notice('Cloze plugin: No containerEl.');
+					}
 				}
 				element.querySelectorAll<HTMLElement>(this.clozeSelector())
 						.forEach(el => el.classList.add(CLASSES.cloze));
+				this.toggleAllHide(element, this.isAllHide);
 			}
 			
-			this.toggleAllHide(element, this.isAllHide);
 		})
-		
 	}
 
 	private isPreviewMode(): boolean {
@@ -161,10 +181,6 @@ export default class ClozePlugin extends Plugin {
 			}
 		}
 		return false;
-	}
-
-	onunload() {
-
 	}
 
 	async loadSettings() {
@@ -242,12 +258,21 @@ export default class ClozePlugin extends Plugin {
 		}
 	}
 
-	addCloze = (editor: Editor) => {
+	addCloze = (editor: Editor, needHint?: boolean) => {
 		const currentStr = editor.getSelection();
-		const newStr = currentStr
+		const content = currentStr
 			.replace(/<span class="cloze-span">(.*?)<\/span>/g, "$1");
-		editor.replaceSelection(`<span class="cloze-span">${newStr}</span>`);
-		editor.blur();
+		if (needHint) {
+			new HintModal(this.app, content, (hint) => {
+				const newStr = `<span class="cloze-span" data-cloze-hint="${hint}">` + content + '</span>';
+				editor.replaceSelection(newStr);
+				editor.blur();
+			}).open();
+		} else {
+			const newStr = '<span class="cloze-span">' + content + '</span>';
+			editor.replaceSelection(newStr);
+			editor.blur();
+		}
 	}
 
 	removeCloze = (editor: Editor) => {
@@ -256,107 +281,5 @@ export default class ClozePlugin extends Plugin {
 			.replace(/<span.*?class="cloze-span".*?>(.*?)<\/span>/g, "$1");
 		editor.replaceSelection(newStr);
 	};
-
 }
 
-class SettingTab extends PluginSettingTab {
-	plugin: ClozePlugin;
-
-	constructor(app: App, plugin: ClozePlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const { containerEl } = this;
-
-		containerEl.empty();
-		containerEl.createEl("h1", { text: "Cloze" });
-
-		new Setting(containerEl)
-		.setName(lang.setting_selector_tag)
-		.setDesc(lang.setting_selector_tag_desc)
-		.addText((text) => text
-			.setValue(this.plugin.settings.selectorTag)
-			.onChange(async (value) => {
-				this.plugin.settings.selectorTag = this.sanitizeTag(value);
-				await this.plugin.saveSettings();
-			}))
-
-		new Setting(containerEl)
-			.setName(lang.setting_hide_by_default)
-			.setDesc(lang.setting_hide_by_default_desc)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.defaultHide)
-				.onChange(value => {
-					this.plugin.settings.defaultHide = value;
-					this.plugin.saveSettings();
-				}))
-
-		containerEl.createEl('h2', { text: lang.setting_auto_convert });
-		new Setting(containerEl)
-			.setName(lang.setting_highlight)
-			.setDesc(lang.setting_highlight_desc)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.includeHighlighted)
-				.onChange(value => {
-					this.plugin.settings.includeHighlighted = value;
-					this.plugin.saveSettings();
-				}))
-
-		new Setting(containerEl)
-			.setName(lang.setting_bold)
-			.setDesc(lang.setting_bold_desc)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.includeBolded)
-				.onChange(value => {
-					this.plugin.settings.includeBolded = value;
-					this.plugin.saveSettings();
-				}))
-
-		new Setting(containerEl)
-			.setName(lang.setting_underline)
-			.setDesc(lang.setting_underline_desc)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.includeUnderlined)
-				.onChange(value => {
-					this.plugin.settings.includeUnderlined = value;
-					this.plugin.saveSettings();
-				}))
-		
-		containerEl.createEl('h2', { text: lang.setting_custom_cloze });
-		new Setting(containerEl)
-			.setName(lang.setting_fixed_cloze_width)
-			.setDesc(lang.setting_fixed_cloze_width_desc)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.fixedClozeWidth)
-				.onChange(value => {
-					this.plugin.settings.fixedClozeWidth = value;
-					this.plugin.saveSettings();
-				}))
-		
-		containerEl.createEl("p", { 
-			text: lang.setting_contact + " ",
-			cls: "setting-item-description"
-		}).createEl("a", {
-			text: "here",
-			href: "https://github.com/DearVikki/obsidian-cloze-plugin/issues",
-		});
-	}
-
-
-	// Check and clean up tags that are not (what I understand to be) well formed Obsidian tags.
-	sanitizeTag(tagInput: string): string {
-		const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
-
-		// Remove initial '#' if present
-		const tagBody = tagInput.startsWith('#') ? tagInput.slice(1) : tagInput;
-		if (allowedCharacters.test(tagBody)) {
-			return '#' + tagBody;
-		}
-
-		// Hopefully never needed, this is where we replace disallowed characters with underscores
-		const sanitizedTagBody = tagBody.replace(/[^a-zA-Z0-9-_]/g, '_');
-		return '#' + sanitizedTagBody;
-	}
-}
