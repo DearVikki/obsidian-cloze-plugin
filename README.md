@@ -12,15 +12,15 @@ Update: FYI, I just found that there is a fantastic plugin called [Spaced Repeti
 
 ### Basic
 
-Select any text and right-click to open the Editor Menu. "Create cloze" or "Create cloze with hint" are used to create clozes, and "Remove cloze" is used to batch remove clozes.
+Select any text and right-click to open the Editor Menu. 
+
+- Create cloze: Quickly convert the selection into a cloze.
+- Create cloze with hint: You will be prompted to input a hint for the cloze first.
+- Remove cloze: Batch remove clozes from the selected text.
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/editor-menu.png" width="400" />
 
-By enabling the following settings, the corresponding text will also automatically be converted into clozes in reading mode.
-
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.png" width="350" />
-
-Then in reading mode, you can toggle the visibility of a cloze area by just clicking it. If you want to toggle the visibility of all clozes, click on the ribbon icon --- the small fish.
+Afterwards in the reading mode, you can toggle the visibility of a cloze area by just clicking it. If you want to toggle the visibility of all clozes, click on the ribbon icon --- the small fish.
 
 <p>
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish.png" width="300" />
@@ -55,21 +55,21 @@ Since clozes are html span tags under the hood, there're mainly two ways to disp
 
 You may enable 'Fixed cloze width' in the settings, which helps to ensure that the original text length is not revealed.
 
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-fixed-width.png" width="350" />
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-fixed-width.png" />
 
 #### Activation
 
 The plugin is active on all notes by default, but you can configure it to only activate on notes with a specific tag. Simply provide the desired tag in the 'Required tag' setting.
 
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-tag.png" width="350" />
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-tag.png" />
 
 #### Customized Editor Menu
 
 You can customize editor menu by enabling/disabling the following settings.
 
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-editor-menu.png" width="350" />
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-editor-menu.png" />
 
-### Customized styles
+#### Customized styles
 
 There are certain css variables that you may customize via css snippets.
 
