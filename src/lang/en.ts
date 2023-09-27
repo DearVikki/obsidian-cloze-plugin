@@ -1,8 +1,8 @@
 import { Ilangs } from './types';
 
 const langs: Ilangs = {
-    add_cloze: 'Add cloze',
-	add_cloze_with_hint: 'Add cloze with hint',
+    add_cloze: 'Create cloze',
+	add_cloze_with_hint: 'Create cloze with hint',
     remove_cloze: 'Remove cloze',
     toggle_cloze: 'Toggle all clozes',
     setting_selector_tag:'Required tag',

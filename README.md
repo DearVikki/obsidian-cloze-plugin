@@ -8,69 +8,79 @@ Update: FYI, I just found that there is a fantastic plugin called [Spaced Repeti
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/demo.gif" width="500" />
 
-## Usage
+## Use
 
-### Create clozes
+### Basic
 
-You can create clozes by directly converting specific text segments, such as highlights or bolded texts, or by selecting any text.
+Select any text and right-click to open the Editor Menu. "Create cloze" or "Create cloze with hint" are used to create clozes, and "Remove cloze" is used to batch remove clozes.
 
-#### Convert from specific text segments
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/editor-menu.png" width="400" />
 
-By enabling the following three settings, the corresponding text will automatically be converted into clozes in reading mode.
+By enabling the following settings, the corresponding text will also automatically be converted into clozes in reading mode.
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.png" width="350" />
 
-#### Custom clozes
-
-By default, the plugin adds 2 menu items: "Add Cloze" and "Remove Cloze", which are only visible when text is selected. The selected text will be underlined to indicate it has been clozed. Additionally, You can conveniently select and remove multiple clozed texts at once.
-
-<p>
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/add.png" width="280" />
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/remove.png" width="500" />
-</p> 
-
-##### Cloze hint
-
-Since clozes are html span tags under the hood, there're mainly two ways to display the hint.
-
-- Hint directly displays in the cloze. 
-
-  Add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" data-cloze-hint="your hint"></span>`
-
-- Hint displays when hovered over (only supported in PC).
-
-  Add `title="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" title="your hint"></span>`
-
-#### Fixed cloze width
-
-You may enable 'Fixed cloze width' in the settings, which helps to ensure that the original text length is not revealed.
-
-### Utilizing clozes
-
-#### Single cloze
-
-To toggle the visibility of a cloze area, simply click on it. Note it only works in reading mode. Everything remains same in editing mode.
-
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/enable_highlight.gif" width="400" />
-
-#### All clozes
-
-If you want to toggle the visibility of all clozes, click on the ribbon icon --- the small fish.
-
-Note that currently, it will also affect the default cloze visibility of the new page.
+Then in reading mode, you can toggle the visibility of a cloze area by just clicking it. If you want to toggle the visibility of all clozes, click on the ribbon icon --- the small fish.
 
 <p>
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish.png" width="300" />
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
-### Activation
+### Features
+
+#### Auto Convert
+
+By enabling the following settings, the corresponding text will also automatically be converted into clozes in reading mode.
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.png" width="350" />
+
+#### Cloze hint
+
+Since clozes are html span tags under the hood, there're mainly two ways to display the hint.
+
+- Hint directly displays in the cloze. 
+
+  Create the cloze with "Create cloze with hint" or manually add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" data-cloze-hint="your hint"></span>`
+
+  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
+
+- Hint displays when hovered over (only supported in PC).
+
+  Add `title="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" title="your hint"></span>`
+
+  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint2.png" width="300" />
+
+#### Fixed cloze width
+
+You may enable 'Fixed cloze width' in the settings, which helps to ensure that the original text length is not revealed.
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-fixed-width.png" width="350" />
+
+#### Activation
 
 The plugin is active on all notes by default, but you can configure it to only activate on notes with a specific tag. Simply provide the desired tag in the 'Required tag' setting.
 
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-tag.png" width="350" />
+
+#### Customized Editor Menu
+
+You can customize editor menu by enabling/disabling the following settings.
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-editor-menu.png" width="350" />
+
 ### Customized styles
 
-There are certain style variables that you may customize via css snippets.
+There are certain css variables that you may customize via css snippets.
+
+| Variable  | Description  |
+|---|---|
+| --cloze-underline-color  | Cloze underline clor  |
+| --cloze-underline-width  | Cloze underline width  |
+| --cloze-underline-style  | Cloze underline style  |
+| --cloze-hint-color  | Cloze hint color  |
+| --cloze-hint-font-size  | Cloze hint font size |
+| --cloze-fixed-width  | Cloze fixed width (if fix-width enabled) |
 
 Here is an example.
 
@@ -81,14 +91,14 @@ body {
 	--cloze-underline-style: dashed;
 	--cloze-hint-color: blue;
 	--cloze-hint-font-size: 30px;
-	--cloze-fixed-width: 10px; /* if fix-width enabled */
+	--cloze-fixed-width: 10px;
 }
 
 ```
 
 ### Best practices
 
-- Enable Obsidian hotkey for "Add Cloze" could save you enough time for a cup of tea! <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="700" />
+- Enable Obsidian hotkey for "Add Cloze" could save you enough time for a cup of tea! <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkeys.png" width="700" /><img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkeys2.png" width="700" />
 - Cloze-mate: [Spaced Repetition #review flag](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/) is a best mate for reviewing pages.
 
 ## Q&As

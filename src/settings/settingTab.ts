@@ -30,7 +30,6 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.includeHighlighted = value;
 					this.plugin.saveSettings();
 				}))
-
 		new Setting(containerEl)
 			.setName(lang.setting_bold)
 			.setDesc(lang.setting_bold_desc)
@@ -40,7 +39,6 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.includeBolded = value;
 					this.plugin.saveSettings();
 				}))
-
 		new Setting(containerEl)
 			.setName(lang.setting_underline)
 			.setDesc(lang.setting_underline_desc)
@@ -50,32 +48,6 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.includeUnderlined = value;
 					this.plugin.saveSettings();
 				}))
-		
-		containerEl.createEl('h2', { text: lang.setting_editor_menu });
-		new Setting(containerEl)
-			.setName(lang.setting_editor_menu_add_cloze)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.editorMenuAddCloze)
-				.onChange(value => {
-					this.plugin.settings.editorMenuAddCloze = value;
-					this.plugin.saveSettings();
-				}))
-		new Setting(containerEl)
-		.setName(lang.setting_editor_menu_add_cloze_with_hint)
-		.addToggle(toggle => toggle
-			.setValue(this.plugin.settings.editorMenuAddClozeWithHint)
-			.onChange(value => {
-				this.plugin.settings.editorMenuAddClozeWithHint = value;
-				this.plugin.saveSettings();
-			}))
-		new Setting(containerEl)
-		.setName(lang.setting_editor_menu_remove_cloze)
-		.addToggle(toggle => toggle
-			.setValue(this.plugin.settings.editorMenuRemoveCloze)
-			.onChange(value => {
-				this.plugin.settings.editorMenuRemoveCloze = value;
-				this.plugin.saveSettings();
-			}))
 		
 		containerEl.createEl('h2', { text: lang.setting_custom_setting });
 		new Setting(containerEl)
@@ -105,6 +77,32 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.defaultHide = value;
 					this.plugin.saveSettings();
 				}));
+		
+		containerEl.createEl('h2', { text: lang.setting_editor_menu });
+		new Setting(containerEl)
+			.setName(lang.setting_editor_menu_add_cloze)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.editorMenuAddCloze)
+				.onChange(value => {
+					this.plugin.settings.editorMenuAddCloze = value;
+					this.plugin.saveSettings();
+				}))
+		new Setting(containerEl)
+		.setName(lang.setting_editor_menu_add_cloze_with_hint)
+		.addToggle(toggle => toggle
+			.setValue(this.plugin.settings.editorMenuAddClozeWithHint)
+			.onChange(value => {
+				this.plugin.settings.editorMenuAddClozeWithHint = value;
+				this.plugin.saveSettings();
+			}))
+		new Setting(containerEl)
+		.setName(lang.setting_editor_menu_remove_cloze)
+		.addToggle(toggle => toggle
+			.setValue(this.plugin.settings.editorMenuRemoveCloze)
+			.onChange(value => {
+				this.plugin.settings.editorMenuRemoveCloze = value;
+				this.plugin.saveSettings();
+			}))
 		
 		containerEl.createEl("p", { 
 			text: lang.setting_contact + " ",
