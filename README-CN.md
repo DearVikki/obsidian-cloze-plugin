@@ -12,85 +12,94 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 
 ## 使用
 
-### 创建填空
+### 基本
 
-可通过特定文本或任何自定义文本创建！
+选中文本，点击右键唤出编辑器菜单。
 
-#### 特定文本
+- 创建填空: 将所选区域转换为填空.
+- 创建带提示的填空： 会弹出弹框，以便于先录入提示. 提示后续会显示在填空中。
+- 移除填空: 移除选中文本里的所有填空.
 
-在「设置」里开启高亮文本、粗体文本、下划线文本的自动转换后，在阅读模式下，它们便会自动转换为填空。
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/editor-menu.png" width="400" />
 
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.png" width="350" />
-
-#### 自定义填空
-
-编辑模式下，选中任意文字，右键弹出选项点击「添加填空」即可转换为填空；选中单个或多个填空, 右键弹出选项点击「移除填空」即可移除。
-
-<p>
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/add.png" width="280" />
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/remove.png" width="500" />
-</p>
-
-##### 填空提示
-
-因为填空的本质是 span 标签，所以有提供以下两种提示方式。
-
-- 提示直接显示在填空里
-
-  在填空的 span 标签里添加 `data-cloze-hint="提示内容"`，e.g. `<span class="cloze-span" data-cloze-hint="提示内容"></span>`
-
-- 鼠标 hover 填空时显示提示（仅支持电脑端） 
-
-  在填空的 span 标签里添加 `title="提示内容"`，e.g. `<span class="cloze-span" title="提示内容"></span>`
-
-##### 固定填空长度
-
-在设置里开启 固定填空长度 后，所有的填空长度将会保持一致，不随文本内容变化。可以通过自定义样式自定义固定填空长度。
-
-### 查看
-
-Note: 仅在阅读模式下有效。
-
-#### 单个填空
-
-点击切换单个填空的显隐，仅在阅读模式下有效。 
-
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/enable_highlight.gif" width="400" />
-
-#### 所有填空
-
-点击侧边 ribbon icon 小鱼，可以切换当页所有填空的显隐。注意新开阅读页面的默认显隐也会受此小鱼的状态影响。
+然后在预览模式下，点击填空切换显隐。点击侧边 ribbon icon 小鱼，可以切换当页所有填空的显隐。注意新开阅读页面的默认显隐也会受此小鱼的状态影响。
 
 <p>
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish.png" width="300" />
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
-### 自定义样式
+### 功能
 
-可以通过自定义 CSS 设置如下样式变量:
+#### 自动转换
+
+在「设置」里开启高亮文本、粗体文本、下划线文本的自动转换后，在阅读模式下，它们便会自动转换为填空。
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.png" width="350" />
+
+#### 填空提示
+
+因为填空的本质是 span 标签，所以有提供以下两种提示方式。
+
+- 提示直接显示在填空里
+
+  通过“创建带提示的填空”创建填空，或者在填空的 span 标签里添加 `data-cloze-hint="提示内容"`，e.g. `<span class="cloze-span" data-cloze-hint="提示内容"></span>`
+
+  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
+
+- 鼠标 hover 填空时显示提示（仅支持电脑端） 
+
+  在填空的 span 标签里添加 `title="提示内容"`，e.g. `<span class="cloze-span" title="提示内容"></span>`
+
+  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint2.png" width="300" />
+
+#### 固定填空长度
+
+在设置里开启 固定填空长度 后，所有的填空长度将会保持一致，不随文本内容变化。可以通过自定义样式自定义固定填空长度。
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-fixed-width.png" />
+
+#### 特定页面启用
+
+通过设置里的「作用标签」设置标签后，该插件将仅作用于带有该标签的笔记上，默认空则作用于所有笔记。
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-tag.png" />
+
+#### 自定义右键菜单
+
+在设置里可以自定义右键菜单选项。
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-editor-menu.png" />
+
+#### 自定义样式
+
+可以通过自定义 CSS 和 CSS 变量自定义样式。
+
+| CSS变量  | 描述  |
+|---|---|
+| --cloze-underline-color  | 填空下划线颜色  |
+| --cloze-underline-width  | 填空下划线宽度  |
+| --cloze-underline-style  | 填空下划线样式  |
+| --cloze-hint-color  | 填空提示颜色  |
+| --cloze-hint-font-size  | 填空提示文字大小 |
+| --cloze-fixed-width  | 填空固定宽度 (如果开启了固定宽度的话) |
+
+示例:
 
 ```css
 body {
-	/* 填空下划线相关 */
-	--cloze-underline-color: pink; /* 填空下划线颜色 */
-	--cloze-underline-width: 2px; /* 填空下划线粗细 */
-	--cloze-underline-style: dashed; /* 填空下划线样式 solid | dashed | dotted */
-	/* 填空提示 */
-	--cloze-hint-color: blue; /* 填空提示颜色 */
-	--cloze-hint-font-size: 30px; /* 填空提示字体大小 */
-	/* 填空固定宽度（若开启） */
+	--cloze-underline-color: pink;
+	--cloze-underline-width: 2px;
+	--cloze-underline-style: dashed;
+	--cloze-hint-color: blue;
+	--cloze-hint-font-size: 30px;
 	--cloze-fixed-width: 10px; 
 }
 ```
 
-### 特定页面启用
-
-通过设置里的「作用标签」设置标签后，该插件将仅作用于带有该标签的笔记上，默认空则作用于所有笔记。
-
 ### 最佳实践
 
-- 将「添加填空」操作添加为 Obsidian 热键可以大大节省时间！<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkey.png" width="800" />
+- 将「添加填空」操作添加为 Obsidian 热键可以大大节省时间！<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkeys.png" width="700" /><img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hotkeys2.png" width="700" />
 - 页面温习好助手：[Spaced Repetition #review 标签](https://www.stephenmwangi.com/obsidian-spaced-repetition/notes/)
 
 ## Q&As

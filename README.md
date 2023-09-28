@@ -75,7 +75,7 @@ There are certain css variables that you may customize via css snippets.
 
 | Variable  | Description  |
 |---|---|
-| --cloze-underline-color  | Cloze underline clor  |
+| --cloze-underline-color  | Cloze underline color  |
 | --cloze-underline-width  | Cloze underline width  |
 | --cloze-underline-style  | Cloze underline style  |
 | --cloze-hint-color  | Cloze hint color  |
