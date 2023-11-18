@@ -3,6 +3,7 @@ import lang from './lang';
 import DEFAULT_SETTINGS, { ClozePluginSettings } from './settings/settingData';
 import SettingTab from './settings/settingTab';
 import HintModal from './components/modal-hint';
+import { JSON } from 'jsdom';
 
 const ATTRS = {
 	hide: 'data-cloze-hide',
@@ -160,6 +161,40 @@ export default class ClozePlugin extends Plugin {
 			}
 			
 		})
+	}
+
+	private wrapTextInSpan(html) {
+		const dom = new JSDOM(html);
+		const { document } = dom.window;
+
+		function traverse(node) {
+			if (node.nodeName.toLowerCase() === 'code') {
+				return;
+			}
+
+			if (node.nodeType === Node.TEXT_NODE) {
+				const regex = /{([^}]*)}/g;
+				let match;
+				let newText = '';
+				let lastIndex = 0;
+				while ((match = regex.exec(node.nodeValue)) !== null) {
+					const matchText = match[1];
+					newText += node.nodeValue.slice(lastIndex, match.index) + `<span>${matchText}</span>`;
+					lastIndex = regex.lastIndex;
+				}
+				newText += node.nodeValue.slice(lastIndex);
+				node.nodeValue = newText;
+				return;
+			}
+
+			for (let i = 0; i < node.childNodes.length; i++) {
+				traverse(node.childNodes[i]);
+			}
+		}
+
+		traverse(document.body);
+
+		return document.body.innerHTML;
 	}
 
 	private isPreviewMode(): boolean {
