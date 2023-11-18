@@ -151,6 +151,12 @@ export default class ClozePlugin extends Plugin {
 				element.querySelectorAll<HTMLElement>(this.clozeSelector())
 						.forEach(el => el.classList.add(CLASSES.cloze));
 				this.toggleAllHide(element, this.isAllHide);
+
+				// Now need to account for the case of adding cloze class to text enclosed in curly brackets
+				// Define a regex to match all text enclosed in curly brackets. Ignore any curly brackets that are nested inside other curly brackets.
+				// Ignore any curly brackets that are inside code blocks.
+
+				const regex = /(?<!`)(?<!\{)\{[^{}]*\}(?!\})(?!`)/gimu;
 			}
 			
 		})
@@ -208,9 +214,6 @@ export default class ClozePlugin extends Plugin {
 			selectors.push('.cm-strong');
 		}
 		if (this.settings.includeCurlyBrackets) {
-			selectors.push('{');
-			selectors.push('}');
-			selectors.push('.cm-curly-bracket');
 		}
 		return selectors.join(', ');
 	}
