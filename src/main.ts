@@ -3,7 +3,6 @@ import lang from './lang';
 import DEFAULT_SETTINGS, { ClozePluginSettings } from './settings/settingData';
 import SettingTab from './settings/settingTab';
 import HintModal from './components/modal-hint';
-import { JSON } from 'jsdom';
 
 const ATTRS = {
 	hide: 'data-cloze-hide',
@@ -156,44 +155,48 @@ export default class ClozePlugin extends Plugin {
 				// Now need to account for the case of adding cloze class to text enclosed in curly brackets
 				// Define a regex to match all text enclosed in curly brackets. Ignore any curly brackets that are nested inside other curly brackets.
 				// Ignore any curly brackets that are inside code blocks.
-				element = this.wrapTextInSpan(element);
+				element = this.wrapTextEnclosedInCurlyBracketsWithSpan(element);
 			}
 			
 		})
 	}
 
-	private wrapTextInSpan(html) {
-		const dom = new JSDOM(html);
-		const { document } = dom.window;
+	private wrapMatchedTextWithSpan(text: string, regex: RegExp): string {
+		let match;
+		let newText = '';
+		let lastIndex = 0;
 
-		function traverse(node) {
-			if (node.nodeName.toLowerCase() === 'code') {
-				return;
-			}
-
-			if (node.nodeType === Node.TEXT_NODE) {
-				const regex = /{([^}]*)}/g;
-				let match;
-				let newText = '';
-				let lastIndex = 0;
-				while ((match = regex.exec(node.nodeValue)) !== null) {
-					const matchText = match[1];
-					newText += node.nodeValue.slice(lastIndex, match.index) + `<span>${matchText}</span>`;
-					lastIndex = regex.lastIndex;
-				}
-				newText += node.nodeValue.slice(lastIndex);
-				node.nodeValue = newText;
-				return;
-			}
-
-			for (let i = 0; i < node.childNodes.length; i++) {
-				traverse(node.childNodes[i]);
-			}
+		while ((match = regex.exec(text)) !== null) {
+			const matchText = match[1];
+			newText += text.slice(lastIndex, match.index) + `<span class="cloze-curly-brackets">${matchText}</span>`;
+			lastIndex = regex.lastIndex;
 		}
 
-		traverse(document.body);
+		newText += text.slice(lastIndex);
+		return newText;
+	}
 
-		return document.body.innerHTML;
+	private traverse(node: ChildNode) {
+		if (node.nodeName.toLowerCase() === 'code') {
+			return;
+		}
+
+		if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
+			const regex = /{([^}]*)}/g;
+			const newText = this.wrapMatchedTextWithSpan(node.nodeValue, regex);
+			const newElement = document.createElement('span');
+
+			newElement.innerHTML = newText;
+			node.replaceWith(newElement);
+			return;
+		}
+
+		node.childNodes.forEach(this.traverse);
+	}
+
+	private wrapTextEnclosedInCurlyBracketsWithSpan(element: HTMLElement) {
+		this.traverse(element);
+		return element;
 	}
 
 	private isPreviewMode(): boolean {
@@ -248,6 +251,7 @@ export default class ClozePlugin extends Plugin {
 			selectors.push('.cm-strong');
 		}
 		if (this.settings.includeCurlyBrackets) {
+			selectors.push('.cloze-curly-brackets');
 		}
 		return selectors.join(', ');
 	}
