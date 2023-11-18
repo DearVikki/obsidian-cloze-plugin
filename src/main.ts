@@ -156,8 +156,7 @@ export default class ClozePlugin extends Plugin {
 				// Now need to account for the case of adding cloze class to text enclosed in curly brackets
 				// Define a regex to match all text enclosed in curly brackets. Ignore any curly brackets that are nested inside other curly brackets.
 				// Ignore any curly brackets that are inside code blocks.
-
-				const regex = /(?<!`)(?<!\{)\{[^{}]*\}(?!\})(?!`)/gimu;
+				element = this.wrapTextInSpan(element);
 			}
 			
 		})
