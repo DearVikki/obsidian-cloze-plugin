@@ -176,7 +176,7 @@ export default class ClozePlugin extends Plugin {
 		return newText;
 	}
 
-	private traverse(node: ChildNode) {
+	private traverse(node: HTMLElement) {
 		if (node.nodeName.toLowerCase() === 'code') {
 			return;
 		}
@@ -186,12 +186,12 @@ export default class ClozePlugin extends Plugin {
 			const newText = this.wrapMatchedTextWithSpan(node.nodeValue, regex);
 			const newElement = document.createElement('span');
 
-			newElement.innerHTML = newText;
+			newElement.innerHTML = "{" + newText + "}";
 			node.replaceWith(newElement);
 			return;
 		}
 
-		node.childNodes.forEach(this.traverse);
+		node.childNodes.forEach(this.traverse.bind(this));
 	}
 
 	private wrapTextEnclosedInCurlyBracketsWithSpan(element: HTMLElement) {
