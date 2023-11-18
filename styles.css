@@ -24,6 +24,10 @@ body {
 .cloze-span,
 .cloze {
 	/*border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;*/
+	/* border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important; */
+	background: radial-gradient(#c5c5c5eb, #82a6bb00);
+	border-radius: 0.5em;
+	background-blend-mode: soft-light;
 }
 
 [data-cloze-hide=true]:not(.cloze-hint) {
