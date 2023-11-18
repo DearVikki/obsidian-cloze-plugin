@@ -182,11 +182,11 @@ export default class ClozePlugin extends Plugin {
 		}
 
 		if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
-			const regex = /{([^}]*)}/g;
+			const regex = /\{([^}]*)\}/gimu;
 			const newText = this.wrapMatchedTextWithSpan(node.nodeValue, regex);
 			const newElement = document.createElement('span');
 
-			newElement.innerHTML = "{" + newText + "}";
+			newElement.innerHTML = newText;
 			node.replaceWith(newElement);
 			return;
 		}
@@ -195,7 +195,7 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	private wrapTextEnclosedInCurlyBracketsWithSpan(element: HTMLElement) {
-		this.traverse(element);
+		// this.traverse(element);
 		return element;
 	}
 
