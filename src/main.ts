@@ -14,6 +14,7 @@ const CLASSES = {
 	cloze: 'cloze',
 	highlight: 'cloze-highlight',
 	bold: 'cloze-bold',
+	brackets: 'cloze-brackets',
 	underline: 'cloze-underline',
 	hint: 'cloze-hint',
 	fixedWidth: 'cloze-fixed-width',
@@ -205,6 +206,11 @@ export default class ClozePlugin extends Plugin {
 		if (this.settings.includeBolded) {
 			selectors.push('strong');
 			selectors.push('.cm-strong');
+		}
+		if (this.settings.includeCurlyBrackets) {
+			selectors.push('{');
+			selectors.push('}');
+			selectors.push('.cm-curly-bracket');
 		}
 		return selectors.join(', ');
 	}
