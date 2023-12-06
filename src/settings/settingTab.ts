@@ -48,6 +48,15 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.includeUnderlined = value;
 					this.plugin.saveSettings();
 				}))
+		new Setting(containerEl)
+			.setName(lang.setting_bracket)
+			.setDesc(lang.setting_bracket_desc)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.includeBracketed)
+				.onChange(value => {
+					this.plugin.settings.includeBracketed = value;
+					this.plugin.saveSettings();
+				}))
 		
 		containerEl.createEl('h2', { text: lang.setting_custom_setting });
 		new Setting(containerEl)

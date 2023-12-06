@@ -138,20 +138,22 @@ export default class ClozePlugin extends Plugin {
 
 	private initMarkdownPostProcessor() {
 		this.registerMarkdownPostProcessor((element, context) => {
-			if (this.checkTags()) {
-				if (this.settings.fixedClozeWidth) {
-					const containerEl = (context as any).containerEl as HTMLElement;
-					if (containerEl) {
-						containerEl.classList.add(CLASSES.fixedWidth);
-					} else {
-						new Notice('Cloze plugin: No containerEl.');
-					}
+			if (!this.checkTags()) { return; }
+			if (this.settings.fixedClozeWidth) {
+				const containerEl = (context as any).containerEl as HTMLElement;
+				if (containerEl) {
+					containerEl.classList.add(CLASSES.fixedWidth);
+				} else {
+					new Notice('Cloze plugin: No containerEl.');
 				}
-				element.querySelectorAll<HTMLElement>(this.clozeSelector())
-						.forEach(el => el.classList.add(CLASSES.cloze));
-				this.toggleAllHide(element, this.isAllHide);
 			}
-			
+			if (this.settings.includeBracketed) {
+				// bracketed texts need to be surrounded with span
+				this.transformBracketedText(element);
+			}
+			element.querySelectorAll<HTMLElement>(this.clozeSelector())
+					.forEach(el => el.classList.add(CLASSES.cloze));
+			this.toggleAllHide(element, this.isAllHide);
 		})
 	}
 
@@ -207,6 +209,13 @@ export default class ClozePlugin extends Plugin {
 			selectors.push('.cm-strong');
 		}
 		return selectors.join(', ');
+	}
+
+	transformBracketedText = (element: HTMLElement) => {
+		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
+		items.forEach((item: HTMLElement) => {
+			item.innerHTML = item.innerText.replace(/\[(.*?)\]/g, '<span class="cloze-span">$1</span>');
+		})
 	}
 
 	hideClozeContent = (target: HTMLElement) => {
