@@ -35,7 +35,7 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 
 在「设置」里开启高亮文本、粗体文本、下划线文本、括号文本的自动转换后，在阅读模式下，它们便会自动转换为填空。
 
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="400" />
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="700" />
 
 #### 填空提示
 

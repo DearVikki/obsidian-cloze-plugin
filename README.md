@@ -33,7 +33,7 @@ Afterwards in the reading mode, you can toggle the visibility of a cloze area by
 
 By enabling the following settings, the corresponding text will also automatically be converted into clozes in reading mode.
 
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="400" />
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="700" />
 
 #### Cloze hint
 
