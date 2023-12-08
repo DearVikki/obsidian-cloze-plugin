@@ -147,8 +147,9 @@ export default class ClozePlugin extends Plugin {
 					new Notice('Cloze plugin: No containerEl.');
 				}
 			}
+			
+			// bracketed texts need to be surrounded with span
 			if (this.settings.includeBracketed) {
-				// bracketed texts need to be surrounded with span
 				this.transformBracketedText(element);
 			}
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
@@ -214,7 +215,7 @@ export default class ClozePlugin extends Plugin {
 	transformBracketedText = (element: HTMLElement) => {
 		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
 		items.forEach((item: HTMLElement) => {
-			item.innerHTML = item.innerText.replace(/\[(.*?)\]/g, '<span class="cloze-span">$1</span>');
+			item.innerHTML = item.innerHTML.replace(/\[(.*?)\]/g, '<span class="cloze-span">$1</span>');
 		})
 	}
 
