@@ -153,12 +153,14 @@ export default class ClozePlugin extends Plugin {
 			if (this.settings.includeBracketed) {
 				this.transformBracketedText(element);
 			}
+
+			// curly bracketed text need to be surrounded with span
+			if (this.settings.includeCurlyBrackets) {
+				this.transformCurlyBracketedText(element);
+			}
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
 					.forEach(el => el.classList.add(CLASSES.cloze));
 			this.toggleAllHide(element, this.isAllHide);
-
-			element = this.wrapTextEnclosedInCurlyBracketsWithSpan(element);
-
 		})
 	}
 
@@ -193,11 +195,6 @@ export default class ClozePlugin extends Plugin {
 		}
 
 		node.childNodes.forEach(this.traverse.bind(this));
-	}
-
-	private wrapTextEnclosedInCurlyBracketsWithSpan(element: HTMLElement) {
-		// this.traverse(element);
-		return element;
 	}
 
 	private isPreviewMode(): boolean {
@@ -261,6 +258,13 @@ export default class ClozePlugin extends Plugin {
 		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
 		items.forEach((item: HTMLElement) => {
 			item.innerHTML = item.innerHTML.replace(/\[(.*?)\]/g, '<span class="cloze-span">$1</span>');
+		})
+	}
+
+	transformCurlyBracketedText = (element: HTMLElement) => {
+		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
+		items.forEach((item: HTMLElement) => {
+			item.innerHTML = item.innerHTML.replace(/\{(.*?)\}/g, '<span class="cloze-span">$1</span>');
 		})
 	}
 
