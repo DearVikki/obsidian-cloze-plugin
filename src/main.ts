@@ -158,6 +158,7 @@ export default class ClozePlugin extends Plugin {
 			if (this.settings.includeCurlyBrackets) {
 				this.transformCurlyBracketedText(element);
 			}
+
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
 					.forEach(el => el.classList.add(CLASSES.cloze));
 			this.toggleAllHide(element, this.isAllHide);
@@ -261,12 +262,14 @@ export default class ClozePlugin extends Plugin {
 		})
 	}
 
+
 	transformCurlyBracketedText = (element: HTMLElement) => {
 		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
 		items.forEach((item: HTMLElement) => {
 			item.innerHTML = item.innerHTML.replace(/\{(.*?)\}/g, '<span class="cloze-span">$1</span>');
 		})
 	}
+
 
 	hideClozeContent = (target: HTMLElement) => {
 		if(!target.getAttribute(ATTRS.hide)) {                         
