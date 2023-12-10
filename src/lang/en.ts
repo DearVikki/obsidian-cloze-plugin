@@ -18,6 +18,8 @@ const langs: Ilangs = {
 	setting_curly_brackets_desc: 'Enable this setting, all {text enclosed in curly brackets} will be converted to cloze.',
     setting_underline: 'Underlined text',
     setting_underline_desc: 'Enable this setting, all <u>underlined texts</u> will be converted to cloze.',
+	setting_bracket: 'Bracketed text',
+    setting_bracket_desc: 'Enable this setting, all [bracketed texts] will be converted to cloze.',
 	setting_editor_menu: 'Editor menu',
 	setting_editor_menu_add_cloze: 'Display add cloze button',
 	setting_editor_menu_add_cloze_with_hint: 'Display add cloze with hint button',

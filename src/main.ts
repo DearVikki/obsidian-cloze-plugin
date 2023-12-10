@@ -139,25 +139,26 @@ export default class ClozePlugin extends Plugin {
 
 	private initMarkdownPostProcessor() {
 		this.registerMarkdownPostProcessor((element, context) => {
-			if (this.checkTags()) {
-				if (this.settings.fixedClozeWidth) {
-					const containerEl = (context as any).containerEl as HTMLElement;
-					if (containerEl) {
-						containerEl.classList.add(CLASSES.fixedWidth);
-					} else {
-						new Notice('Cloze plugin: No containerEl.');
-					}
+			if (!this.checkTags()) { return; }
+			if (this.settings.fixedClozeWidth) {
+				const containerEl = (context as any).containerEl as HTMLElement;
+				if (containerEl) {
+					containerEl.classList.add(CLASSES.fixedWidth);
+				} else {
+					new Notice('Cloze plugin: No containerEl.');
 				}
-				element.querySelectorAll<HTMLElement>(this.clozeSelector())
-						.forEach(el => el.classList.add(CLASSES.cloze));
-				this.toggleAllHide(element, this.isAllHide);
-
-				// Now need to account for the case of adding cloze class to text enclosed in curly brackets
-				// Define a regex to match all text enclosed in curly brackets. Ignore any curly brackets that are nested inside other curly brackets.
-				// Ignore any curly brackets that are inside code blocks.
-				element = this.wrapTextEnclosedInCurlyBracketsWithSpan(element);
 			}
-			
+
+			// bracketed texts need to be surrounded with span
+			if (this.settings.includeBracketed) {
+				this.transformBracketedText(element);
+			}
+			element.querySelectorAll<HTMLElement>(this.clozeSelector())
+					.forEach(el => el.classList.add(CLASSES.cloze));
+			this.toggleAllHide(element, this.isAllHide);
+
+			element = this.wrapTextEnclosedInCurlyBracketsWithSpan(element);
+
 		})
 	}
 
@@ -254,6 +255,13 @@ export default class ClozePlugin extends Plugin {
 			selectors.push('.cloze-curly-brackets');
 		}
 		return selectors.join(', ');
+	}
+
+	transformBracketedText = (element: HTMLElement) => {
+		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
+		items.forEach((item: HTMLElement) => {
+			item.innerHTML = item.innerHTML.replace(/\[(.*?)\]/g, '<span class="cloze-span">$1</span>');
+		})
 	}
 
 	hideClozeContent = (target: HTMLElement) => {

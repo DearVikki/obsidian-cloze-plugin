@@ -14,6 +14,8 @@ export interface Ilangs {
     setting_bold_desc: string;
     setting_underline: string;
     setting_underline_desc: string;
+	setting_bracket: string;
+    setting_bracket_desc: string;
 	setting_editor_menu: string;
 	setting_editor_menu_add_cloze: string;
 	setting_editor_menu_add_cloze_with_hint: string;
