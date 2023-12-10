@@ -14,7 +14,7 @@ const CLASSES = {
 	cloze: 'cloze',
 	highlight: 'cloze-highlight',
 	bold: 'cloze-bold',
-	brackets: 'cloze-brackets',
+	curly_brackets: 'cloze-curly-curly_brackets',
 	underline: 'cloze-underline',
 	hint: 'cloze-hint',
 	fixedWidth: 'cloze-fixed-width',
