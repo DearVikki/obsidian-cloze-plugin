@@ -148,16 +148,23 @@ export default class ClozePlugin extends Plugin {
 					new Notice('Cloze plugin: No containerEl.');
 				}
 			}
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> main
 			// bracketed texts need to be surrounded with span
 			if (this.settings.includeBracketed) {
 				this.transformBracketedText(element);
 			}
+<<<<<<< HEAD
 
 			// curly bracketed text need to be surrounded with span
 			if (this.settings.includeCurlyBrackets) {
 				this.transformCurlyBracketedText(element);
 			}
+=======
+>>>>>>> main
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
 					.forEach(el => el.classList.add(CLASSES.cloze));
 			this.toggleAllHide(element, this.isAllHide);
@@ -261,6 +268,7 @@ export default class ClozePlugin extends Plugin {
 		})
 	}
 
+<<<<<<< HEAD
 	transformCurlyBracketedText = (element: HTMLElement) => {
 		const items = element.querySelectorAll("p, h1, h2, h3, h4, h5, li, td, th, code");
 		items.forEach((item: HTMLElement) => {
@@ -268,6 +276,8 @@ export default class ClozePlugin extends Plugin {
 		})
 	}
 
+=======
+>>>>>>> main
 	hideClozeContent = (target: HTMLElement) => {
 		if(!target.getAttribute(ATTRS.hide)) {                         
 			if(target.getAttribute(ATTRS.hint)) { 							// if we have attribute: data-cloze-hint then
