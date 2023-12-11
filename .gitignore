@@ -21,5 +21,5 @@ data.json
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
 
-# Ignore package-lock.json
+# Exclude the package-lock.json file created with npm
 package-lock.json
