@@ -10,20 +10,23 @@ If your plugin does not need CSS, delete this file.
 body {
 	--cloze-underline-width: 1px;
 	--cloze-underline-style: solid;
+	/*noinspection CssUnresolvedCustomProperty*/
 	--cloze-underline-color: var(--text-normal);
 	--cloze-fixed-width: 30px;
+	/*noinspection CssUnresolvedCustomProperty*/
 	--cloze-hint-color: var(--text-muted);
+	/*noinspection CssUnresolvedCustomProperty*/
 	--cloze-hint-font-size: var(--font-ui-smaller);
 }
 
 .cloze-span,
 .cloze[data-cloze-hide=true]{
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .cloze-span,
 .cloze{
-    border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
+	border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
 }
 
 [data-cloze-hide=true]:not(.cloze-hint) {
@@ -31,7 +34,7 @@ body {
 	text-shadow: none !important;
 }
 
-/* embedded segs */
+/* embedded segments */
 [data-cloze-hide=true] mark,
 [data-cloze-hide=true] u,
 [data-cloze-hide=true] strong {

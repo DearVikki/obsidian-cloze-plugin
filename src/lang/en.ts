@@ -14,6 +14,8 @@ const langs: Ilangs = {
     setting_highlight_desc: 'Enable this setting, all ==highlighted texts== will be converted to cloze.',
     setting_bold: 'Bolded text',
     setting_bold_desc: 'Enable this setting, all **bolded texts** will be converted to cloze.',
+	setting_curly_brackets: 'Curly bracketed text',
+	setting_curly_brackets_desc: 'Enable this setting, all {text enclosed in curly brackets} will be converted to cloze.',
     setting_underline: 'Underlined text',
     setting_underline_desc: 'Enable this setting, all <u>underlined texts</u> will be converted to cloze.',
 	setting_bracket: 'Bracketed text',

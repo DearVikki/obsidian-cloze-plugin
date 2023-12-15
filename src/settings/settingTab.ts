@@ -40,6 +40,15 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.saveSettings();
 				}))
 		new Setting(containerEl)
+			.setName(lang.setting_curly_brackets)
+			.setDesc(lang.setting_curly_brackets_desc)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.includeCurlyBrackets)
+				.onChange(value => {
+					this.plugin.settings.includeCurlyBrackets = value;
+					this.plugin.saveSettings();
+				}))
+		new Setting(containerEl)
 			.setName(lang.setting_underline)
 			.setDesc(lang.setting_underline_desc)
 			.addToggle(toggle => toggle
