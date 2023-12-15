@@ -50,6 +50,15 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.saveSettings();
 				}))
 		new Setting(containerEl)
+			.setName(lang.setting_italics)
+			.setDesc(lang.setting_italics_desc)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.includeItalics)
+				.onChange(value => {
+					this.plugin.settings.includeItalics = value;
+					this.plugin.saveSettings();
+				}))
+		new Setting(containerEl)
 			.setName(lang.setting_bracket)
 			.setDesc(lang.setting_bracket_desc)
 			.addToggle(toggle => toggle

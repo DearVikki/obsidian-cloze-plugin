@@ -4,6 +4,7 @@ export interface ClozePluginSettings {
 	includeHighlighted: boolean;
 	includeUnderlined: boolean;
 	includeBolded: boolean;
+	includeItalics: boolean;
 	includeCurlyBrackets: boolean;
 	includeBracketed: boolean;
 	fixedClozeWidth: boolean;
@@ -18,6 +19,7 @@ const DEFAULT_SETTINGS: ClozePluginSettings = {
 	includeHighlighted: false,
 	includeUnderlined: false,
 	includeBolded: false,
+	includeItalics: false,
 	includeBracketed: false,
 	includeCurlyBrackets: false,
 	fixedClozeWidth: false,

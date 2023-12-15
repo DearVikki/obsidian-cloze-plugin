@@ -214,6 +214,10 @@ export default class ClozePlugin extends Plugin {
 			selectors.push('strong');
 			selectors.push('.cm-strong');
 		}
+		if (this.settings.includeItalics) {
+			selectors.push('em');
+			selectors.push('.cm-em');
+		}
 		return selectors.join(', ');
 	}
 

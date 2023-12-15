@@ -16,6 +16,8 @@ const langs: Ilangs = {
     setting_bold_desc: "启用此设置后，所有**粗体文字**也将转换为填空。",
     setting_underline: "下划线文字",
     setting_underline_desc: "启用此设置后，所有<u>下划线文字</u>也将转换为填空。",
+	setting_italics: "斜体文字",
+	setting_italics_desc: "启用此设置后，所有<i>斜体文字</i>也将转换为填空。",
 	setting_bracket: "括号文字",
 	setting_bracket_desc: "启用此设置后，所有[括号文字]也将转换为填空。",
 	setting_curly_bracket: "花括号文字",
