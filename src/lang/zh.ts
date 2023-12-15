@@ -18,6 +18,8 @@ const langs: Ilangs = {
     setting_underline_desc: "启用此设置后，所有<u>下划线文字</u>也将转换为填空。",
 	setting_bracket: "括号文字",
 	setting_bracket_desc: "启用此设置后，所有[括号文字]也将转换为填空。",
+	setting_curly_bracket: "花括号文字",
+	setting_curly_bracket_desc: "启用此设置后，所有{花括号文字}也将转换为填空。",
 	setting_editor_menu: '编辑器菜单',
 	setting_editor_menu_add_cloze: '显示添加填空按钮',
 	setting_editor_menu_add_cloze_with_hint: '显示添加带提示的填空按钮',

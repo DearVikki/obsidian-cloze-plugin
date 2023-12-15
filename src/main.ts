@@ -14,7 +14,6 @@ const CLASSES = {
 	cloze: 'cloze',
 	highlight: 'cloze-highlight',
 	bold: 'cloze-bold',
-	curly_brackets: 'cloze-curly-curly_brackets',
 	underline: 'cloze-underline',
 	hint: 'cloze-hint',
 	fixedWidth: 'cloze-fixed-width',
@@ -164,39 +163,6 @@ export default class ClozePlugin extends Plugin {
 		})
 	}
 
-	private wrapMatchedTextWithSpan(text: string, regex: RegExp): string {
-		let match;
-		let newText = '';
-		let lastIndex = 0;
-
-		while ((match = regex.exec(text)) !== null) {
-			const matchText = match[1];
-			newText += text.slice(lastIndex, match.index) + `<span class="cloze-curly-brackets">${matchText}</span>`;
-			lastIndex = regex.lastIndex;
-		}
-
-		newText += text.slice(lastIndex);
-		return newText;
-	}
-
-	private traverse(node: HTMLElement) {
-		if (node.nodeName.toLowerCase() === 'code') {
-			return;
-		}
-
-		if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
-			const regex = /\{([^}]*)\}/gimu;
-			const newText = this.wrapMatchedTextWithSpan(node.nodeValue, regex);
-			const newElement = document.createElement('span');
-
-			newElement.innerHTML = newText;
-			node.replaceWith(newElement);
-			return;
-		}
-
-		node.childNodes.forEach(this.traverse.bind(this));
-	}
-
 	private isPreviewMode(): boolean {
 		return this.app.workspace.getActiveViewOfType(MarkdownView)?.getMode() === 'preview';
 	}
@@ -247,9 +213,6 @@ export default class ClozePlugin extends Plugin {
 		if (this.settings.includeBolded) {
 			selectors.push('strong');
 			selectors.push('.cm-strong');
-		}
-		if (this.settings.includeCurlyBrackets) {
-			selectors.push('.cloze-curly-brackets');
 		}
 		return selectors.join(', ');
 	}
