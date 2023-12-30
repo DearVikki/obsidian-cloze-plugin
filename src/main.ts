@@ -134,6 +134,16 @@ export default class ClozePlugin extends Plugin {
 				}
 			},
 		})
+
+		this.addCommand({
+			id: "toggle-cloze",
+			name: lang.toggle_cloze,
+			callback: () => {
+				// Called when the user call the command.
+				this.isAllHide = !this.isAllHide;
+				this.toggleAllHide(document, this.isAllHide);
+			},
+		})
 	}
 
 	private initMarkdownPostProcessor() {
