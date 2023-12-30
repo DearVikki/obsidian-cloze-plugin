@@ -94,13 +94,10 @@ export default class ClozePlugin extends Plugin {
 			id: "add-cloze",
 			name: lang.add_cloze,
 			icon: "fish",
-			editorCheckCallback: (checking, editor, ctx) => {
+			editorCallback: (editor, ctx) => {
 				const selection = editor.getSelection();
-				if (selection && this.checkTags() && !checking) {
+				if (selection && this.checkTags()) {
 					this.addCloze(editor);
-					return true;
-				} else {
-					return false;
 				}
 			}
 		})
@@ -109,13 +106,10 @@ export default class ClozePlugin extends Plugin {
 			id: "add-cloze-with-hint",
 			name: lang.add_cloze_with_hint,
 			icon: "fish-symbol",
-			editorCheckCallback: (checking, editor, ctx) => {
+			editorCallback: (editor, ctx) => {
 				const selection = editor.getSelection();
-				if (selection && this.checkTags() && !checking) {
+				if (selection && this.checkTags()) {
 					this.addCloze(editor, true);
-					return true;
-				} else {
-					return false;
 				}
 			}
 		})
@@ -124,13 +118,10 @@ export default class ClozePlugin extends Plugin {
 			id: "remove-cloze",
 			name: lang.remove_cloze,
 			icon: "fish-off",
-			editorCheckCallback: (checking, editor, ctx) => {
+			editorCallback: (editor, ctx) => {
 				const selection = editor.getSelection();
-				if (selection && this.checkTags() && !checking) {
+				if (selection && this.checkTags()) {
 					this.removeCloze(editor);
-					return true;
-				} else {
-					return false;
 				}
 			},
 		})
@@ -139,9 +130,10 @@ export default class ClozePlugin extends Plugin {
 			id: "toggle-cloze",
 			name: lang.toggle_cloze,
 			callback: () => {
-				// Called when the user call the command.
-				this.isAllHide = !this.isAllHide;
-				this.toggleAllHide(document, this.isAllHide);
+				if(this.checkTags()) {
+					this.isAllHide = !this.isAllHide;
+					this.toggleAllHide(document, this.isAllHide);
+				}
 			},
 		})
 	}

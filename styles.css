@@ -37,7 +37,8 @@ body {
 /* embedded segments */
 [data-cloze-hide=true] mark,
 [data-cloze-hide=true] u,
-[data-cloze-hide=true] strong {
+[data-cloze-hide=true] strong,
+[data-cloze-hide=true] a {
 	color: transparent !important;
 	text-shadow: none !important;
 }
