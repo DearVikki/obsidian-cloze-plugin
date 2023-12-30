@@ -1,6 +1,6 @@
 {
 	"name": "cloze-plugin",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
