@@ -41,6 +41,7 @@ body {
 [data-cloze-hide=true] a {
 	color: transparent !important;
 	text-shadow: none !important;
+	pointer-events: none;
 }
 
 /* fixed cloze width */
