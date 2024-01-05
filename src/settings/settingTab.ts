@@ -5,6 +5,7 @@ import {
 } from "obsidian";
 import type ClozePlugin from "src/main";
 import lang from "src/lang";
+import { HINT_STRATEGY } from './settingData';
 
 class SettingTab extends PluginSettingTab {
 	plugin: ClozePlugin;
@@ -16,10 +17,16 @@ class SettingTab extends PluginSettingTab {
 
 	display(): void {
 		const { containerEl } = this;
-
 		containerEl.empty();
 		containerEl.createEl("h1", { text: "Cloze" });
+		this.displayAutoConvert(containerEl);
+		this.displayCustomSetting(containerEl);
+		this.displayHintSetting(containerEl);
+		this.displayEditorMenuSetting(containerEl);
+		this.displayContact(containerEl);
+	}
 
+	displayAutoConvert(containerEl: HTMLElement) : void {
 		containerEl.createEl('h2', { text: lang.setting_auto_convert });
 		new Setting(containerEl)
 			.setName(lang.setting_highlight)
@@ -76,6 +83,9 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.settings.includeCurlyBrackets = value;
 					this.plugin.saveSettings();
 				}))
+	}
+
+	displayCustomSetting(containerEl: HTMLElement) : void {
 		containerEl.createEl('h2', { text: lang.setting_custom_setting });
 		new Setting(containerEl)
 		.setName(lang.setting_selector_tag)
@@ -105,6 +115,70 @@ class SettingTab extends PluginSettingTab {
 					this.plugin.saveSettings();
 				}));
 		
+	}
+
+	displayHintSetting(containerEl: HTMLElement) : void {
+		// hint settings
+		const settingEl = containerEl.createEl('div');
+		settingEl.createEl('h2', { text: 'Hint' });
+		new Setting(settingEl)
+		.setName(lang.setting_hint_strategy)
+		.setDesc(lang.setting_hint_strategy_desc)
+		.addDropdown((comp)=>{
+			comp.addOptions({[HINT_STRATEGY.none]:'Off', [HINT_STRATEGY.count]:'By Count', [HINT_STRATEGY.percentage]:'By Percentage'});
+			comp.setValue(this.plugin.settings.hintStrategy.toString());
+			comp.onChange((val)=>{
+				this.plugin.settings.hintStrategy = Number(val);
+				initHintStrategyVaule(Number(val));
+				this.plugin.saveSettings();
+			});
+		})
+		
+		let hintStrategySetting: Setting | undefined;
+		const initHintStrategyVaule = (strategy: number) => {
+			if(hintStrategySetting) hintStrategySetting.settingEl.parentElement?.removeChild(hintStrategySetting.settingEl);
+			switch (strategy) {
+				case HINT_STRATEGY.none:
+					break;
+				case HINT_STRATEGY.count:
+					hintStrategySetting = new Setting(settingEl)
+					.setName(lang.setting_hint_by_count)
+					.setDesc(lang.setting_hint_by_count_desc)
+					.addText((text) => {
+						text
+						.setValue(this.plugin.settings.hintCount.toString())
+						.onChange(async (value) => {
+							const valueNumber = Number(value);
+							if(isNaN(valueNumber)) return;
+							this.plugin.settings.hintCount = valueNumber;
+							this.plugin.saveSettings();
+						});
+					});
+					break;
+				case HINT_STRATEGY.percentage:
+					hintStrategySetting = new Setting(settingEl)
+					.setName(lang.setting_hint_by_percentage)
+					.setDesc(lang.setting_hint_by_percentage_desc)
+					.addText((text) => {
+						text
+						.setValue(this.plugin.settings.hintPercentage*100+'%')
+						.onChange(async (value) => {
+							const matches = value.match(/^(\d+)%$/);
+							if(!matches) return;
+							const valueNumber = Number(matches[1])/100;
+							if(isNaN(valueNumber)) return;
+							this.plugin.settings.hintPercentage = valueNumber;
+							this.plugin.saveSettings();
+						});
+					});
+					break;
+			}
+		}
+		initHintStrategyVaule(Number(this.plugin.settings.hintStrategy));
+	}
+
+	displayEditorMenuSetting(containerEl: HTMLElement) : void {
+		// editor menu settings
 		containerEl.createEl('h2', { text: lang.setting_editor_menu });
 		new Setting(containerEl)
 			.setName(lang.setting_editor_menu_add_cloze)
@@ -130,7 +204,9 @@ class SettingTab extends PluginSettingTab {
 				this.plugin.settings.editorMenuRemoveCloze = value;
 				this.plugin.saveSettings();
 			}))
-		
+	}
+
+	displayContact(containerEl: HTMLElement) : void {
 		containerEl.createEl("p", { 
 			text: lang.setting_contact + " ",
 			cls: "setting-item-description"
@@ -139,7 +215,6 @@ class SettingTab extends PluginSettingTab {
 			href: "https://github.com/DearVikki/obsidian-cloze-plugin/issues",
 		});
 	}
-
 
 	// Check and clean up tags that are not (what I understand to be) well formed Obsidian tags.
 	sanitizeTag(tagInput: string): string {

@@ -5,6 +5,7 @@ const langs: Ilangs = {
 	add_cloze_with_hint: "添加带提示的填空",
     remove_cloze: "移除填空",
     toggle_cloze: "显/隐所有填空",
+	reveal_more_hint: "更多提示",
     setting_selector_tag:"作用标签",
     setting_selector_tag_desc: "该插件将仅作用于带有该标签的笔记上，为空则作用于所有笔记 i.e. #cloze。",
     setting_hide_by_default: "默认隐藏",
@@ -29,6 +30,15 @@ const langs: Ilangs = {
     setting_custom_setting: "自定义设置",
     setting_fixed_cloze_width: "固定填空宽度",
     setting_fixed_cloze_width_desc: "启用此设置后，所有填空的宽度默认相同（可避免透露原文字长度）。",
+	setting_display_first_letters_count: "显示首字母/字符个数",
+	setting_display_first_letters_count_desc: "设置后，所有填空在隐藏状态下会展示首n个字母/字符（作为提示）。",
+	setting_hint: "提示",
+	setting_hint_strategy: "提示策略",
+	setting_hint_strategy_desc: "如果你希望填空默认展示提示，可选择自动提示策略：首字母或是百分比。",
+	setting_hint_by_count: "提示字数",
+	setting_hint_by_count_desc: "填空在隐藏状态下会展示原位的首n个字符。",
+	setting_hint_by_percentage: "提示百分比",
+	setting_hint_by_percentage_desc: "填空在隐藏状态下会展示原位的首n%个字符。",
 	setting_contact: "谢谢你的使用~ 欢迎反馈！戳这里："
 }
 

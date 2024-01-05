@@ -3,6 +3,7 @@ export interface Ilangs {
 	add_cloze_with_hint: string;
     remove_cloze: string;
     toggle_cloze: string;
+	reveal_more_hint: string;
     setting_selector_tag: string;
     setting_selector_tag_desc: string;
     setting_hide_by_default: string;
@@ -27,6 +28,15 @@ export interface Ilangs {
     setting_custom_setting: string;
     setting_fixed_cloze_width: string;
     setting_fixed_cloze_width_desc: string;
+	setting_display_first_letters_count: string;
+	setting_display_first_letters_count_desc: string;
 	setting_contact: string;
+	setting_hint: string;
+	setting_hint_strategy: string;
+	setting_hint_strategy_desc: string;
+	setting_hint_by_percentage: string;
+	setting_hint_by_percentage_desc: string;
+	setting_hint_by_count: string;
+	setting_hint_by_count_desc: string;
     [key: string]: string;
 }

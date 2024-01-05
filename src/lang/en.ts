@@ -5,6 +5,7 @@ const langs: Ilangs = {
 	add_cloze_with_hint: 'Create cloze with hint',
     remove_cloze: 'Remove cloze',
     toggle_cloze: 'Toggle all clozes',
+	reveal_more_hint: 'More hint',
     setting_selector_tag:'Required tag',
     setting_selector_tag_desc: 'If you provide a tag here, the plugin will only activate on notes with that tag i.e. #cloze.',
     setting_hide_by_default: 'Hide by default',
@@ -29,6 +30,15 @@ const langs: Ilangs = {
     setting_custom_setting: 'Custom settings',
     setting_fixed_cloze_width: 'Fixed cloze width',
     setting_fixed_cloze_width_desc: 'Enable this setting, clozes will have the same default width, which helps to ensure that the original text length is not revealed.',
+	setting_display_first_letters_count: 'Display nst letters/characters',
+	setting_display_first_letters_count_desc: 'Set this setting, all clozes in the hidden state will show the first n letters/characters as a hint.',
+	setting_hint: 'Hint',
+	setting_hint_strategy: 'Hint strategy',
+	setting_hint_strategy_desc: 'If you would like the cloze to automatically display the hint based on its content, you have two strategies to choose from: by text count or by text length percentage.',
+	setting_hint_by_count: 'By count',
+	setting_hint_by_count_desc: 'Set this setting, clozes in the hidden state will show its first n letters/characters as a hint.',
+	setting_hint_by_percentage: 'By percentage',
+	setting_hint_by_percentage_desc: 'Set this setting, clozes in the hidden state will show hint based on the percentage of the cloze content. For example, 20% of a cloze containing 10 letters would show 2 of its 1st letters.',
 	setting_contact: 'Thank you for using Cloze! Any feedback is welcomed',
 }
 

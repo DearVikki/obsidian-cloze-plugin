@@ -11,6 +11,16 @@ export interface ClozePluginSettings {
 	editorMenuAddCloze: boolean;
 	editorMenuAddClozeWithHint: boolean;
 	editorMenuRemoveCloze: boolean;
+
+	hintStrategy: number;
+	hintCount: number;
+	hintPercentage: number;
+}
+
+export const HINT_STRATEGY = {
+	none: 0,
+	count: 1,
+	percentage: 2,
 }
 
 const DEFAULT_SETTINGS: ClozePluginSettings = {
@@ -26,6 +36,10 @@ const DEFAULT_SETTINGS: ClozePluginSettings = {
 	editorMenuAddCloze: true,
 	editorMenuAddClozeWithHint: true,
 	editorMenuRemoveCloze: true,
+
+	hintStrategy: HINT_STRATEGY.none,
+	hintCount: 2,
+	hintPercentage: 0.20, // 20%
 }
 
 export default DEFAULT_SETTINGS;

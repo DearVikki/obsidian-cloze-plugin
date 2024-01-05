@@ -20,13 +20,14 @@ body {
 }
 
 .cloze-span,
-.cloze[data-cloze-hide=true]{
-	cursor: pointer;
+.cloze{
+	border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
+	position: relative;
 }
 
 .cloze-span,
-.cloze{
-	border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
+.cloze[data-cloze-hide=true]{
+	cursor: pointer;
 }
 
 [data-cloze-hide=true]:not(.cloze-hint) {
@@ -35,6 +36,7 @@ body {
 }
 
 /* embedded segments */
+[data-cloze-hide=true] .cloze-content,
 [data-cloze-hide=true] mark,
 [data-cloze-hide=true] u,
 [data-cloze-hide=true] strong,
@@ -57,6 +59,15 @@ body {
 	color: var(--cloze-hint-color);
 	font-size: var(--cloze-hint-font-size);
 	text-shadow: none !important;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	display: none;
+	pointer-events: none;
+}
+
+[data-cloze-hide=true] .cloze-hint {
+	display: block;
 }
 
 .modal-hint-setting input{

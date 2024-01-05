@@ -1,23 +1,11 @@
 import { App, Plugin, Menu, Editor, MarkdownView, Notice } from 'obsidian';
 import lang from './lang';
-import DEFAULT_SETTINGS, { ClozePluginSettings } from './settings/settingData';
+import DEFAULT_SETTINGS, { ClozePluginSettings, HINT_STRATEGY } from './settings/settingData';
 import SettingTab from './settings/settingTab';
 import HintModal from './components/modal-hint';
-
-const ATTRS = {
-	hide: 'data-cloze-hide',
-	hint: 'data-cloze-hint',
-	content: 'data-cloze-content',
-}
-
-const CLASSES = {
-	cloze: 'cloze',
-	highlight: 'cloze-highlight',
-	bold: 'cloze-bold',
-	underline: 'cloze-underline',
-	hint: 'cloze-hint',
-	fixedWidth: 'cloze-fixed-width',
-}
+import utils from './utils';
+import { ATTRS, CLASSES } from './const';
+import langs from './lang/en';
 
 export default class ClozePlugin extends Plugin {
 	settings: ClozePluginSettings;
@@ -26,18 +14,22 @@ export default class ClozePlugin extends Plugin {
 
 	async onload() {
 		console.log('load cloze plugin');
-
 		await this.loadSettings();
 		this.addSettingTab(new SettingTab(this.app, this));
 		this.initRibbon();
-		this.registerDomEvent(document, 'click', (event) => {
-			if (this.isPreviewMode() && this.checkTags()) { 
-				this.toggleHide(event.target as HTMLElement);
-			}
-		});
 		this.initEditorMenu();
 		this.initCommand();
 		this.initMarkdownPostProcessor();
+		this.registerDomEvent(document, 'click', (event) => {
+			if (this.isPreviewMode()) {
+				this.toggleHide(utils.getClozeEl(event.target as HTMLElement));
+			}
+		});
+		this.registerDomEvent(document, 'contextmenu', (event)=>{
+			if (this.isPreviewMode()) { 
+				this.onRightClick(event, utils.getClozeEl(event.target as HTMLElement));
+			}
+		})
 	}
 
 	private initRibbon() {
@@ -141,6 +133,7 @@ export default class ClozePlugin extends Plugin {
 	private initMarkdownPostProcessor() {
 		this.registerMarkdownPostProcessor((element, context) => {
 			if (!this.checkTags()) { return; }
+
 			if (this.settings.fixedClozeWidth) {
 				const containerEl = (context as any).containerEl as HTMLElement;
 				if (containerEl) {
@@ -159,10 +152,27 @@ export default class ClozePlugin extends Plugin {
 			if (this.settings.includeCurlyBrackets) {
 				this.transformCurlyBracketedText(element);
 			}
+
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
-					.forEach(el => el.classList.add(CLASSES.cloze));
+				.forEach(this.renderCloze);
 			this.toggleAllHide(element, this.isAllHide);
 		})
+	}
+
+	private onRightClick(event: MouseEvent, $cloze: HTMLElement | null) {
+		if(!$cloze) return;
+		if(!utils.isClozeHide($cloze)) return;
+		if(utils.hasCustomHint($cloze)) return;
+		const menu = new Menu();
+		menu.addItem((item) =>
+			item
+			.setTitle(langs.reveal_more_hint)
+			.setIcon("snail")
+			.onClick(() => {
+				this.revealMoreHint($cloze);
+			})
+		);
+		menu.showAtMouseEvent(event);
 	}
 
 	private isPreviewMode(): boolean {
@@ -236,38 +246,51 @@ export default class ClozePlugin extends Plugin {
 			item.innerHTML = item.innerHTML.replace(/\{(.*?)\}/g, '<span class="cloze-span">$1</span>');
 		})
 	}
+	
+	renderCloze = ($cloze: HTMLElement) => {
+		$cloze.classList.add(CLASSES.cloze);
+		$cloze.innerHTML = `<span class="cloze-hint"></span>`
+		+ `<span class="cloze-content">${$cloze.innerHTML}</span>`;
+		
+		this.initHint($cloze);
+	}
+
+	initHint = ($cloze: HTMLElement) => {
+		let hint = "";
+		if(utils.hasCustomHint($cloze)) { 							// if we have attribute: data-cloze-hint then
+			hint = utils.getClozeCustomHint($cloze); 				// use it                 
+		} else {
+			const textContent = utils.getClozeContent($cloze);
+			if(this.settings.hintStrategy === HINT_STRATEGY.count) {
+				hint = textContent.slice(0, this.settings.hintCount);
+			} else if(this.settings.hintStrategy === HINT_STRATEGY.percentage) {
+				hint = textContent.slice(0, Math.ceil(textContent.length * this.settings.hintPercentage));
+			}
+		}
+		utils.setClozeHint($cloze, hint);
+	}
+
+	// ----------- cloze interaction ------------
 
 	hideClozeContent = (target: HTMLElement) => {
 		if(!target.getAttribute(ATTRS.hide)) {                         
-			if(target.getAttribute(ATTRS.hint)) { 							// if we have attribute: data-cloze-hint then
-				target.setAttribute(ATTRS.content, target.innerHTML)         // store original in attribute:data-cloze-content
-				target.innerHTML = target.getAttribute(ATTRS.hint) || '';    // restore HTML from attribute:data-cloze-hint or ''
-				target.removeAttribute(ATTRS.hint);
-				target.classList.add(CLASSES.hint);                          // add .cloze-hint class
-			}
-			target.setAttribute(ATTRS.hide, 'true');                      // add attribute: data-cloze-hide: true
+			target.setAttribute(ATTRS.hide, 'true');     // add attribute: data-cloze-hide: true
 		}
+		this.initHint(target);                 			// reinit hint
 	}
 
 	showClozeContent = (target: HTMLElement) => {
 		if(target.getAttribute(ATTRS.hide)) {      					  
-			if(target.getAttribute(ATTRS.content)) { 							// if we have attribute: data-cloze-content then
-				target.setAttribute(ATTRS.hint, target.innerHTML)         	// store original in attribute:data-cloze-content
-				target.innerHTML = target.getAttribute(ATTRS.content) || ''; // restore innerHTML from attribute: data-cloze-content or ''
-				target.removeAttribute(ATTRS.content);                       // remove attribute: data-cloze-content
-				target.classList.remove(CLASSES.hint);    				     // remove .cloze-hint class
-			}
 			target.removeAttribute(ATTRS.hide);        					  // remove attribute: data-cloze-hide:true
 		}
 	}
 
-	toggleHide(target: HTMLElement) {
-		if (target.matches(this.clozeSelector())) {
-			if (target.getAttribute(ATTRS.hide)) {
-				this.showClozeContent(target);
-			} else {
-				this.hideClozeContent(target);
-			}
+	toggleHide(target: HTMLElement | null) {
+		if(!target) return;
+		if (target.getAttribute(ATTRS.hide)) {
+			this.showClozeContent(target);
+		} else {
+			this.hideClozeContent(target);
 		}
 	}
 
@@ -309,5 +332,11 @@ export default class ClozePlugin extends Plugin {
 			.replace(/<span.*?class="cloze-span".*?>(.*?)<\/span>/g, "$1");
 		editor.replaceSelection(newStr);
 	};
+
+	revealMoreHint = ($cloze: HTMLElement) => {
+		const currentHint = utils.getClozeCurrentHint($cloze);
+		const hintLength = currentHint.length + 3;
+		utils.setClozeHint($cloze, utils.getClozeContent($cloze).slice(0, hintLength));
+	}
 }
 
