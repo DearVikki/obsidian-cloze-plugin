@@ -37,7 +37,7 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
-### 功能
+### 其他功能
 
 #### 填空提示
 
@@ -57,9 +57,7 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 
   通过“创建带提示的填空”创建填空，或者在填空的 span 标签里添加 `data-cloze-hint="提示内容"`，e.g. `<span class="cloze-span" data-cloze-hint="提示内容"></span>`
 
-  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
-
-🔥 新功能：当你在填空的隐藏状态下，还可以右键单击填空，点击弹出的「更多提示」，来展现填空背后的部分文本哦！
+🔥 新功能：在填空的隐藏状态下，你还可以右键单击填空，再点击弹出的「更多提示」，来展现填空背后的部分文本哦！
 
 #### 固定填空长度
 

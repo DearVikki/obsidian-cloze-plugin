@@ -39,7 +39,7 @@ Afterwards in the reading mode, you can toggle the visibility of a cloze area by
 
 #### Cloze hint
 
-Cloze hints are displayed as text within hidden Cloze elements to serve as reminders.
+Cloze hints are displayed as text within hidden cloze elements to serve as reminders.
 
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
 
@@ -55,7 +55,7 @@ There're mainly two options to give the cloze a hint by default.
 
   Create the cloze with "Create cloze with hint" or manually add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" data-cloze-hint="your hint"></span>`
 
-🔥 New feature: You can also right-click on the cloze to access a menu option bar, and then click on 'More Hint' to dynamically reveal a portion of the cloze.
+🔥 New feature: You can also right-click on the cloze to access a menu option bar, and then click on "More Hint" to dynamically reveal a portion of the cloze.
 
 #### Fixed cloze width
 
