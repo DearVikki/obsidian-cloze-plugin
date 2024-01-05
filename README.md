@@ -2,7 +2,7 @@
 
 English | [简体中文](./README-CN.md)
 
-Inspired from anki cards, this simple plugin for [Obsidian](https://obsidian.md/) enables you to create a cloze from highlighted, underlined, or bolded texts, as well as any selected text in reading mode.
+Inspired from anki cards, this simple plugin for [Obsidian](https://obsidian.md/) enables you to create a cloze from special text segments (including highlighted, underlined, bolded texts and so on), as well as any selected text in reading mode.
 
 Update: FYI, I just found that there is a fantastic plugin called [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-repetition/) that works just as an Obsidian version Anki, which also supports Cloze Cards. On the other hand, the Cloze plugin serves as more of a helper for reviewing pages/articles.
 
@@ -11,6 +11,14 @@ Update: FYI, I just found that there is a fantastic plugin called [Spaced Repeti
 ## Use
 
 ### Basic
+
+#### Auto Convert
+
+By enabling the following settings, the corresponding text will also automatically be converted into clozes in reading mode.
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="700" />
+
+#### Custom Cloze
 
 Select any text and right-click to open the Editor Menu. 
 
@@ -27,29 +35,27 @@ Afterwards in the reading mode, you can toggle the visibility of a cloze area by
 <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/fish-mobile.png" width="280" />
 </p>
 
-### Features
-
-#### Auto Convert
-
-By enabling the following settings, the corresponding text will also automatically be converted into clozes in reading mode.
-
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="700" />
+### Other Features
 
 #### Cloze hint
 
-Since clozes are html span tags under the hood, there're mainly two ways to display the hint.
+Cloze hints are displayed as text within hidden Cloze elements to serve as reminders.
 
-- Hint directly displays in the cloze. 
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
+
+There're mainly two options to give the cloze a hint by default.
+
+- For auto converted cloze:
+  
+  You have the option to configure the cloze to display the hint by default, either showing the first letters or a specific percentage of the cloze content.
+
+  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-hint.jpg" width="700" />
+
+- For custom cloze: 
 
   Create the cloze with "Create cloze with hint" or manually add `data-cloze-hint="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" data-cloze-hint="your hint"></span>`
 
-  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
-
-- Hint displays when hovered over (only supported in PC).
-
-  Add `title="your hint"` attribute to clozed `<span></span>`, e.g. `<span class="cloze-span" title="your hint"></span>`
-
-  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint2.png" width="300" />
+🔥 New feature: You can also right-click on the cloze to access a menu option bar, and then click on 'More Hint' to dynamically reveal a portion of the cloze.
 
 #### Fixed cloze width
 

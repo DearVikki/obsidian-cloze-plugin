@@ -28,8 +28,6 @@ export interface Ilangs {
     setting_custom_setting: string;
     setting_fixed_cloze_width: string;
     setting_fixed_cloze_width_desc: string;
-	setting_display_first_letters_count: string;
-	setting_display_first_letters_count_desc: string;
 	setting_contact: string;
 	setting_hint: string;
 	setting_hint_strategy: string;

@@ -4,7 +4,7 @@
 
 什么是 Cloze？简而言之，就是完型填空。熟悉 Anki 的朋友们绝对不陌生的！记忆单词、句型、语录时，超好用。
 
-这款干净的 Obsidian 插件支持高亮文本、粗体文本、下划线文本以及任何自选文本区域的 cloze 化。不过仅在阅读模式 reading mode 下才可有效交互哦！
+这款干净的 Obsidian 插件支持高亮文本、粗体文本、下划线文本、斜体文本等以及任何自选文本区域的 cloze 化。不过仅在阅读模式 reading mode 下才可有效交互哦！
 
 p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-repetition/) 这款插件简直就是 Obsidian 版本的 Anki，并且也支持 cloze card! 相较起来，Cloze plugin 更适合页面/整篇文章回顾的场景。
 
@@ -13,6 +13,14 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 ## 使用
 
 ### 基本
+
+#### 自动转换
+
+在「设置」里开启高亮文本、粗体文本、下划线文本、括号文本等的自动转换后，在阅读模式下，它们便会自动转换为填空。
+
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="700" />
+
+#### 自定义填空
 
 选中文本，点击右键唤出编辑器菜单。
 
@@ -31,27 +39,27 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 
 ### 功能
 
-#### 自动转换
-
-在「设置」里开启高亮文本、粗体文本、下划线文本、括号文本的自动转换后，在阅读模式下，它们便会自动转换为填空。
-
-<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/settings1.jpg" width="700" />
-
 #### 填空提示
 
-因为填空的本质是 span 标签，所以有提供以下两种提示方式。
+填空提示是填空在隐藏状态下的灰色文字，可起到提示作用（好废话😂
 
-- 提示直接显示在填空里
+<img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
+
+可以通过下列两种方式默认显示填空提示：
+
+- 针对自动转化的填空：
+
+  你可以在设置里开启填空提示，可按填空原文的「字符长度」或「字符百分比」自动显示。
+  
+  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/setting-hint.jpg" width="700" />
+
+- 针对自定义填空：
 
   通过“创建带提示的填空”创建填空，或者在填空的 span 标签里添加 `data-cloze-hint="提示内容"`，e.g. `<span class="cloze-span" data-cloze-hint="提示内容"></span>`
 
   <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint.png" width="300" />
 
-- 鼠标 hover 填空时显示提示（仅支持电脑端） 
-
-  在填空的 span 标签里添加 `title="提示内容"`，e.g. `<span class="cloze-span" title="提示内容"></span>`
-
-  <img src="https://raw.githubusercontent.com/dearvikki/obsidian-cloze-plugin/main/assets/hint2.png" width="300" />
+🔥 新功能：当你在填空的隐藏状态下，还可以右键单击填空，点击弹出的「更多提示」，来展现填空背后的部分文本哦！
 
 #### 固定填空长度
 
