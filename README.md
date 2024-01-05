@@ -113,7 +113,7 @@ body {
 
 Sadly, it can only be "all visibile" or "all hidden" for the present.
 
-Click the ribbon fish first, make sure that the page state is what you expect, and then click "export to PDF".
+In **reading mode**, click the ribbon fish first, make sure that the page state is what you expect, and then click "export to PDF".
 
 ## Installation
 

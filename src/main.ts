@@ -10,7 +10,8 @@ import langs from './lang/en';
 export default class ClozePlugin extends Plugin {
 	settings: ClozePluginSettings;
 
-	isAllHide = true;
+	isSourceHide = false;
+	isPreviewHide = true;
 
 	async onload() {
 		console.log('load cloze plugin');
@@ -34,9 +35,9 @@ export default class ClozePlugin extends Plugin {
 
 	private initRibbon() {
 		this.addRibbonIcon('fish', lang.toggle_cloze, (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			this.toggleAllHide(document, !this.isAllHide);
-			this.isAllHide = !this.isAllHide;
+			if(this.checkTags()) {
+				this.togglePageAllHide();
+			}
 		});
 	}
 
@@ -123,8 +124,7 @@ export default class ClozePlugin extends Plugin {
 			name: lang.toggle_cloze,
 			callback: () => {
 				if(this.checkTags()) {
-					this.isAllHide = !this.isAllHide;
-					this.toggleAllHide(document, this.isAllHide);
+					this.togglePageAllHide();
 				}
 			},
 		})
@@ -155,7 +155,7 @@ export default class ClozePlugin extends Plugin {
 
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
 				.forEach(this.renderCloze);
-			this.toggleAllHide(element, this.isAllHide);
+			this.toggleAllHide(element, this.isPreviewHide);
 		})
 	}
 
@@ -205,12 +205,12 @@ export default class ClozePlugin extends Plugin {
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-		this.isAllHide = this.settings.defaultHide;
+		this.isPreviewHide = this.settings.defaultHide;
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		this.isAllHide = this.settings.defaultHide;
+		this.isPreviewHide = this.settings.defaultHide;
 	}
 
 	clozeSelector = () => {
@@ -294,8 +294,8 @@ export default class ClozePlugin extends Plugin {
 		}
 	}
 
-	toggleAllHide(dom: HTMLElement | Document = document, hide: boolean) {
-		if (this.checkTags()) {
+	toggleAllHide(dom: HTMLElement | Document | null = document, hide: boolean) {
+		if (dom && this.checkTags()) {
 			const marks = dom.querySelectorAll<HTMLElement>(this.clozeSelector());
 			if (hide) {
 				marks.forEach((mark) => {
@@ -306,6 +306,16 @@ export default class ClozePlugin extends Plugin {
 					this.showClozeContent(mark);
 				})
 			}
+		}
+	}
+
+	togglePageAllHide() {
+		if(this.isPreviewMode()) {
+			this.toggleAllHide(document.querySelector<HTMLElement>('.markdown-preview-view'), !this.isPreviewHide);
+			this.isPreviewHide = !this.isPreviewHide;
+		} else {
+			this.toggleAllHide(document.querySelector<HTMLElement>('.markdown-source-view'), !this.isSourceHide);
+			this.isSourceHide = !this.isSourceHide;
 		}
 	}
 
