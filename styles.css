@@ -61,7 +61,8 @@ body {
 	text-shadow: none !important;
 	position: absolute;
 	left: 0;
-	bottom: 0;
+	top: 0;
+	width: max-content;
 	display: none;
 	pointer-events: none;
 }
