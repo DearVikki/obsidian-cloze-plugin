@@ -310,11 +310,15 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	togglePageAllHide() {
+		const mostRecentLeaf = this.app.workspace.getMostRecentLeaf();
+		if (!mostRecentLeaf) return;
+		const leafContainer = mostRecentLeaf.containerEl as HTMLElement;
+		if(!leafContainer) return;
 		if(this.isPreviewMode()) {
-			this.toggleAllHide(document.querySelector<HTMLElement>('.markdown-preview-view'), !this.isPreviewHide);
+			this.toggleAllHide(leafContainer.querySelector<HTMLElement>('.markdown-preview-view'), !this.isPreviewHide);
 			this.isPreviewHide = !this.isPreviewHide;
 		} else {
-			this.toggleAllHide(document.querySelector<HTMLElement>('.markdown-source-view'), !this.isSourceHide);
+			this.toggleAllHide(leafContainer.querySelector<HTMLElement>('.markdown-source-view'), !this.isSourceHide);
 			this.isSourceHide = !this.isSourceHide;
 		}
 	}
