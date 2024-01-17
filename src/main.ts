@@ -310,7 +310,7 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	togglePageAllHide() {
-		const mostRecentLeaf = this.app.workspace.getMostRecentLeaf();
+		const mostRecentLeaf = this.app.workspace.getMostRecentLeaf() as unknown as {containerEl: HTMLElement};
 		if (!mostRecentLeaf) return;
 		const leafContainer = mostRecentLeaf.containerEl as HTMLElement;
 		if(!leafContainer) return;
