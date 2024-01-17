@@ -2,13 +2,7 @@ import { ATTRS, CLASSES } from './const';
 
 const utils = {
 	getClozeEl: (target: HTMLElement) : HTMLElement | null => {
-		let targetCloze = null;
-		if (target.matches('.' + CLASSES.cloze)) {
-			targetCloze = target;
-		} else if (target.matches('.'+CLASSES.clozeContent)) {
-			targetCloze = target.parentElement;
-		}
-		return targetCloze;
+		return target.closest('.' + CLASSES.cloze);
 	},
 	getClozeContentEl: (target: HTMLElement) : HTMLElement | null => {
 		return target.querySelector('.' + CLASSES.clozeContent);
