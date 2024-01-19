@@ -315,10 +315,16 @@ export default class ClozePlugin extends Plugin {
 		const leafContainer = mostRecentLeaf.containerEl as HTMLElement;
 		if(!leafContainer) return;
 		if(this.isPreviewMode()) {
-			this.toggleAllHide(leafContainer.querySelector<HTMLElement>('.markdown-preview-view'), !this.isPreviewHide);
+			const nodeContainers = leafContainer.querySelectorAll<HTMLElement>('.markdown-preview-view');
+			nodeContainers.forEach((nodeContainer) => {
+				this.toggleAllHide(nodeContainer, !this.isPreviewHide);
+			})
 			this.isPreviewHide = !this.isPreviewHide;
 		} else {
-			this.toggleAllHide(leafContainer.querySelector<HTMLElement>('.markdown-source-view'), !this.isSourceHide);
+			const nodeContainers = leafContainer.querySelectorAll<HTMLElement>('.markdown-source-view');
+			nodeContainers.forEach((nodeContainer) => {
+				this.toggleAllHide(nodeContainer, !this.isSourceHide);
+			})
 			this.isSourceHide = !this.isSourceHide;
 		}
 	}
