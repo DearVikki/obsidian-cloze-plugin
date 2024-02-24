@@ -176,7 +176,9 @@ export default class ClozePlugin extends Plugin {
 	}
 
 	private isPreviewMode(): boolean {
-		return this.app.workspace.getActiveViewOfType(MarkdownView)?.getMode() === 'preview';
+		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+		if (view == null) return true; // Under canvas mode
+		return view.getMode() === 'preview';
 	}
 
 	// Extract and verify tags - works in both preview and edit mode
