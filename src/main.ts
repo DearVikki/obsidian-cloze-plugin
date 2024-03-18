@@ -1,4 +1,4 @@
-import { App, Plugin, Menu, Editor, MarkdownView, Notice } from 'obsidian';
+import { App, Plugin, Menu, Editor, MarkdownView, Notice, Workspace } from 'obsidian';
 import lang from './lang';
 import DEFAULT_SETTINGS, { ClozePluginSettings, HINT_STRATEGY } from './settings/settingData';
 import SettingTab from './settings/settingTab';
@@ -31,6 +31,33 @@ export default class ClozePlugin extends Plugin {
 				this.onRightClick(event, utils.getClozeEl(event.target as HTMLElement));
 			}
 		})
+
+		const observer = new MutationObserver((records, observer) => {
+			for (const record of records) {
+				for (const addedNode of record.addedNodes) {
+					console.log('added node');
+					if (addedNode.nodeType == 1) {
+						this.toggleAllHide(addedNode, this.isPreviewHide);
+					}
+				}
+			}
+		})
+
+		this.registerEvent(
+			this.app.workspace.on('active-leaf-change', (leaf) => {
+				console.log("======active leaf change, observer disconnected", leaf);
+				observer.disconnect();
+
+				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+				if (view && view.getMode() === 'preview') {
+					const containerEl = view.containerEl;
+					if (containerEl) {
+						console.log('====observer observe new file')
+						observer.observe(containerEl, {childList: true, subtree: true,});
+					}
+				}
+			})
+		)
 	}
 
 	private initRibbon() {
