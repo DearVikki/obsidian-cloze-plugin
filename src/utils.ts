@@ -34,6 +34,7 @@ const utils = {
 		const $hint = utils.getClozeHintEl(clozeEl);
 		if(!$hint || hint === undefined) return;
 		$hint.textContent = hint;
+		if($hint.parentElement) $hint.parentElement.title = hint;
 	},
 	isClozeHide: (clozeEl: HTMLElement):boolean => {
 		return !!clozeEl.getAttribute(ATTRS.hide);
