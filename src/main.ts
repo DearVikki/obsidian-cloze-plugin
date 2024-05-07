@@ -155,7 +155,8 @@ export default class ClozePlugin extends Plugin {
 
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
 				.forEach(this.renderCloze);
-			this.toggleAllHide(element, this.isPreviewHide);
+			
+			this.toggleAllHide(element, this.isAllHide());
 		})
 	}
 
@@ -179,6 +180,10 @@ export default class ClozePlugin extends Plugin {
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 		if (view == null) return true; // Under canvas mode
 		return view.getMode() === 'preview';
+	}
+
+	private isAllHide(): boolean {
+		return this.isPreviewMode() ? this.isPreviewHide : this.isSourceHide;
 	}
 
 	// Extract and verify tags - works in both preview and edit mode
