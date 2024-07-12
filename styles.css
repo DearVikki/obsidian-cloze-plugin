@@ -20,7 +20,13 @@ body {
 }
 
 .cloze-span,
-.cloze{
+.cloze:not(u){
+	border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
+	position: relative;
+}
+
+/* special for <u> */
+u.cloze[data-cloze-hide=true]{
 	border-bottom: var(--cloze-underline-width) var(--cloze-underline-style) var(--cloze-underline-color) !important;
 	position: relative;
 }
