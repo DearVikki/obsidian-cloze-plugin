@@ -1,7 +1,7 @@
 {
 	"id": "cloze",
 	"name": "Cloze",
-	"version": "0.1.17",
+	"version": "0.1.18",
 	"minAppVersion": "0.12.0",
 	"description": "Convert highlights, underlines, bolded texts or any selected texts into clozes.",
 	"author": "Vikki",

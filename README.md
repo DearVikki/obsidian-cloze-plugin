@@ -37,6 +37,10 @@ Afterwards in the reading mode, you can toggle the visibility of a cloze area by
 
 ### Other Features
 
+#### Hover to reveal
+
+By enabling "Hover to reveal" setting, when the mouse hovers over the cloze, the content will be revealed.
+
 #### Cloze hint
 
 Cloze hints are displayed as text within hidden cloze elements to serve as reminders.

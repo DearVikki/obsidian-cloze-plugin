@@ -39,6 +39,10 @@ p.s.刚发现 [Spaced Repetition](https://www.stephenmwangi.com/obsidian-spaced-
 
 ### 其他功能
 
+#### 鼠标悬停展示
+
+在设置里开启 鼠标悬停显示 后，鼠标悬浮在填空上时，也会展示其隐藏内容。
+
 #### 填空提示
 
 填空提示是填空在隐藏状态下的灰色文字，可起到提示作用（好废话😂
