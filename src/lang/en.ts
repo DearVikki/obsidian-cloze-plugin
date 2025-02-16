@@ -10,6 +10,8 @@ const langs: Ilangs = {
     setting_selector_tag_desc: 'If you provide a tag here, the plugin will only activate on notes with that tag i.e. #cloze.',
     setting_hide_by_default: 'Hide by default',
     setting_hide_by_default_desc: 'Enable this setting, all clozes will be hidden by default when reading the page. 🙈',
+	setting_hover_to_reveal: 'Hover to reveal',
+	setting_hover_to_reveal_desc: 'Enable this setting, clozes will be be revealed on hover.',
     setting_auto_convert: 'Auto Convert',
     setting_highlight: 'Highlighted text',
     setting_highlight_desc: 'Enable this setting, all ==highlighted texts== will be converted to cloze.',

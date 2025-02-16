@@ -97,21 +97,30 @@ class SettingTab extends PluginSettingTab {
 				await this.plugin.saveSettings();
 			}));
 		new Setting(containerEl)
-			.setName(lang.setting_fixed_cloze_width)
-			.setDesc(lang.setting_fixed_cloze_width_desc)
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.fixedClozeWidth)
-				.onChange(value => {
-					this.plugin.settings.fixedClozeWidth = value;
-					this.plugin.saveSettings();
-				}));
-		new Setting(containerEl)
 			.setName(lang.setting_hide_by_default)
 			.setDesc(lang.setting_hide_by_default_desc)
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.defaultHide)
 				.onChange(value => {
 					this.plugin.settings.defaultHide = value;
+					this.plugin.saveSettings();
+				}));
+		new Setting(containerEl)
+			.setName(lang.setting_hover_to_reveal)
+			.setDesc(lang.setting_hover_to_reveal_desc)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.hoverToReveal)
+				.onChange(value => {
+					this.plugin.settings.hoverToReveal = value;
+					this.plugin.saveSettings();
+				}));
+		new Setting(containerEl)
+			.setName(lang.setting_fixed_cloze_width)
+			.setDesc(lang.setting_fixed_cloze_width_desc)
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.fixedClozeWidth)
+				.onChange(value => {
+					this.plugin.settings.fixedClozeWidth = value;
 					this.plugin.saveSettings();
 				}));
 		

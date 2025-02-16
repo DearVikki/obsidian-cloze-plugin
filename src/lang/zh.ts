@@ -10,6 +10,8 @@ const langs: Ilangs = {
     setting_selector_tag_desc: "该插件将仅作用于带有该标签的笔记上，为空则作用于所有笔记 i.e. #cloze。",
     setting_hide_by_default: "默认隐藏",
     setting_hide_by_default_desc: "启用此设置后，打开页面时所有填空内容将默认隐藏。🙈",
+	setting_hover_to_reveal: "鼠标悬停显示",
+	setting_hover_to_reveal_desc: "启用此设置后，鼠标悬停在填空上时将显示内容。",
     setting_auto_convert: "自动转换",
     setting_highlight: "高亮文字",
     setting_highlight_desc: "启用此设置后，所有==高亮文字==也将转换为填空。",

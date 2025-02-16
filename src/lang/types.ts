@@ -8,6 +8,8 @@ export interface Ilangs {
     setting_selector_tag_desc: string;
     setting_hide_by_default: string;
     setting_hide_by_default_desc: string;
+    setting_hover_to_reveal: string;
+    setting_hover_to_reveal_desc: string;
     setting_auto_convert: string;
     setting_highlight: string;
     setting_highlight_desc: string;

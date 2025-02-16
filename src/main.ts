@@ -13,6 +13,10 @@ export default class ClozePlugin extends Plugin {
 	isSourceHide = false;
 	isPreviewHide = true;
 
+	constructor(app: App, manifest: any) {
+		super(app, manifest);
+	}
+
 	async onload() {
 		console.log('load cloze plugin');
 		await this.loadSettings();
@@ -21,16 +25,8 @@ export default class ClozePlugin extends Plugin {
 		this.initEditorMenu();
 		this.initCommand();
 		this.initMarkdownPostProcessor();
-		this.registerDomEvent(document, 'click', (event) => {
-			if (this.isPreviewMode()) {
-				this.toggleHide(utils.getClozeEl(event.target as HTMLElement));
-			}
-		});
-		this.registerDomEvent(document, 'contextmenu', (event)=>{
-			if (this.isPreviewMode()) { 
-				this.onRightClick(event, utils.getClozeEl(event.target as HTMLElement));
-			}
-		})
+		this.initPageClickEvent();
+		this.initNewWindowPageClickEvent();
 	}
 
 	private initRibbon() {
@@ -154,10 +150,61 @@ export default class ClozePlugin extends Plugin {
 			}
 
 			element.querySelectorAll<HTMLElement>(this.clozeSelector())
-				.forEach(this.renderCloze);
+				.forEach($cloze => {
+					this.renderCloze($cloze);
+					if(this.settings.hoverToReveal) {
+						this.initClozeMouseOverReveal($cloze);
+					}
+				});
 			
 			this.toggleAllHide(element, this.isAllHide());
 		})
+	}
+
+	private initClozeMouseOverReveal($cloze: HTMLElement) {
+		this.registerDomEvent($cloze, 'mouseenter', (event) => {
+			if (this.isPreviewMode()) {
+				this.setClozeOnHover($cloze, true);
+			}
+		});
+		this.registerDomEvent($cloze, 'mouseleave', (event) => {
+			if (this.isPreviewMode()) {
+				this.setClozeOnHover($cloze, false);
+			}
+		});
+	}
+
+	private initPageClickEvent() {
+		this.registerDomEvent(document, 'click', (event) => {
+			if (this.isPreviewMode()) {
+				this.toggleHide(utils.getClozeEl(event.target as HTMLElement));
+			}
+		});
+		
+		this.registerDomEvent(document, 'contextmenu', (event)=>{
+			if (this.isPreviewMode()) { 
+				this.onRightClick(event, utils.getClozeEl(event.target as HTMLElement));
+			}
+		});
+	}
+
+	// init for new window
+	private initNewWindowPageClickEvent() {
+		const handler = (event: MouseEvent) => {
+			this.toggleHide(utils.getClozeEl(event.target as HTMLElement));
+		}
+		this.app.workspace.on('window-open', (a, win)=>{
+			if(win !== null) {
+				// remove it as event listener will be preserved in new window
+				win.document.addEventListener("click", handler);
+			}
+		});
+		this.app.workspace.on('window-close', (a, win)=>{
+			if(win !== null) {
+				// remove it as event listener will be preserved in new window
+				win.document.removeEventListener("click", handler);
+			}
+		});
 	}
 
 	private onRightClick(event: MouseEvent, $cloze: HTMLElement | null) {
@@ -279,16 +326,38 @@ export default class ClozePlugin extends Plugin {
 
 	// ----------- cloze interaction ------------
 
-	hideClozeContent = (target: HTMLElement) => {
+	hideClozeContent = (target: HTMLElement | null) => {
+		if(!target) return;
 		if(!target.getAttribute(ATTRS.hide)) {                         
 			target.setAttribute(ATTRS.hide, 'true');     // add attribute: data-cloze-hide: true
 		}
+		this.updateClozeClass(target);                 			// update class
 		this.initHint(target);                 			// reinit hint
 	}
 
-	showClozeContent = (target: HTMLElement) => {
+	showClozeContent = (target: HTMLElement | null) => {
+		if(!target) return;
 		if(target.getAttribute(ATTRS.hide)) {      					  
 			target.removeAttribute(ATTRS.hide);        					  // remove attribute: data-cloze-hide:true
+		}
+		this.updateClozeClass(target);
+	}
+
+	setClozeOnHover = (target: HTMLElement | null, hoverState: boolean) => {
+		if(!target) return;
+		if(hoverState) {
+			target.setAttribute(ATTRS.hover, 'true');
+		} else {
+			target.removeAttribute(ATTRS.hover);
+		}
+		this.updateClozeClass(target);
+	}
+
+	updateClozeClass = (target: HTMLElement) => {
+		if(target.getAttribute(ATTRS.hover) || !target.getAttribute(ATTRS.hide)) {
+			target.classList.remove(CLASSES.colzeHide);
+		} else {
+			target.classList.add(CLASSES.colzeHide);
 		}
 	}
 

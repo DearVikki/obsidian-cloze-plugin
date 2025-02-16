@@ -1,6 +1,7 @@
 export interface ClozePluginSettings {
 	defaultHide: boolean;
 	selectorTag: string;
+	hoverToReveal: boolean;
 	includeHighlighted: boolean;
 	includeUnderlined: boolean;
 	includeBolded: boolean;
@@ -25,6 +26,7 @@ export const HINT_STRATEGY = {
 
 const DEFAULT_SETTINGS: ClozePluginSettings = {
 	defaultHide: true,
+	hoverToReveal: false,
 	selectorTag: "#",
 	includeHighlighted: false,
 	includeUnderlined: false,
